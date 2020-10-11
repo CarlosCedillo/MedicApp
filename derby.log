@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sat Oct 10 21:42:17 MDT 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0175-15c0-7cc8-0000072d1a98 
+on database directory C:\Users\cgca_\Documents\NetBeansProyects\MedicApp\DB\MedicApp.DB with class loader sun.misc.Launcher$AppClassLoader@6d06d69c 
+Loaded from file:/C:/Users/cgca_/Documents/NetBeansProyects/MedicApp/src/libreries/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_111-b14
+user.dir=C:\Users\cgca_\Documents\NetBeansProyects\MedicApp
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
