@@ -30,12 +30,13 @@ public class DataBase {
                 System.out.println("\n"+db+" data base created");
                 
                 String createDoctors = "CREATE TABLE doctors ("
-                        + "doctorId varchar(30), "
+                        + "doctorUserName varchar(30), "
+                        + "password varchar(150), "
+                        + "recoberyKey varchar(150), "
                         + "doctorName varchar(50), "
                         + "doctorLastName1 varchar(50), "
                         + "doctorLastName2 varchar(50), "
-                        + "doctorSex varchar(1), "
-                        + "password varchar(20))";
+                        + "doctorSex varchar(1))";
                 
                 try {
                     
