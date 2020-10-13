@@ -1,7 +1,7 @@
 /* 
 doctorUserName varchar(30)
 password varchar(150)
-recoberyKey varchar(150)
+doctorEmail varchar(150)
 doctorName varchar(50)
 doctorLastName1 varchar(50)
 doctorLastName2 varchar(50)
@@ -19,8 +19,8 @@ import java.util.List;
 public interface doctorDao {
     
     public boolean create(String doctorUserName, String password, String doctorName,
-    String doctorLastName1, String doctorLastName2, String doctorSex, String recoberyKey);
+    String doctorLastName1, String doctorLastName2, String doctorSex, String doctorEmail);
     
-    public List<Doctors> read() throws Exception;
+    //public List<Doctors> read() throws Exception;
     
 }

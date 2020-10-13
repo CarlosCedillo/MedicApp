@@ -1,7 +1,7 @@
 /* 
 doctorUserName varchar(30)
 password varchar(150)
-recoberyKey varchar(150)
+doctorEmail varchar(150)
 doctorName varchar(50)
 doctorLastName1 varchar(50)
 doctorLastName2 varchar(50)
@@ -21,7 +21,7 @@ public class Doctors {
     String doctorLastName1;
     String doctorLastName2;
     String doctorSex;
-    String recoberyKey;
+    String doctorEmail;
 
     public String getDoctorUserName() {
         return doctorUserName;
@@ -71,12 +71,12 @@ public class Doctors {
         this.doctorSex = doctorSex;
     }
 
-    public String getRecoberyKey() {
-        return recoberyKey;
+    public String getDoctorEmail() {
+        return doctorEmail;
     }
 
-    public void setRecoberyKey(String recoberyKey) {
-        this.recoberyKey = recoberyKey;
+    public void setDoctorEmail(String doctorEmail) {
+        this.doctorEmail = doctorEmail;
     }
     
 }

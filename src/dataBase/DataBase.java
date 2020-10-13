@@ -32,7 +32,7 @@ public class DataBase {
                 String createDoctors = "CREATE TABLE doctors ("
                         + "doctorUserName varchar(30), "
                         + "password varchar(150), "
-                        + "recoberyKey varchar(150), "
+                        + "doctorEmail varchar(150), "
                         + "doctorName varchar(50), "
                         + "doctorLastName1 varchar(50), "
                         + "doctorLastName2 varchar(50), "
