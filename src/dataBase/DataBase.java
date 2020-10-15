@@ -40,20 +40,20 @@ public class DataBase {
                 
                 try {
                     
-                    System.out.println("\nCrating table: doctors");
+                    System.out.println("Crating table: doctors");
                     PreparedStatement preparedStatement = connection.prepareStatement(createDoctors);
                     preparedStatement.execute();
-                    System.out.println("Table doctors created");
+                    System.out.println("Table doctors created\n");
                     preparedStatement.close();
                     
                 } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(e.getMessage()+"\n");
                 }
                 
             }
             
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+"\n");
         }
         
         return connection;
@@ -70,7 +70,7 @@ public class DataBase {
             connection = DriverManager.getConnection("jdbc:derby:.\\DB\\"+db+".DB");
             
             if( connection != null ){
-                System.out.println("\nConnected to "+db+" data base");
+                System.out.println("Connected to "+db+" data base");
             }
             
         } catch (ClassNotFoundException | SQLException e) {
@@ -80,16 +80,18 @@ public class DataBase {
         return connection;
     }
     
-    public void closeConnectio(){
+    public Connection closeConnectio(){
         
         try {
             
-            System.out.println("\nDisconnected to "+db+" data base");
+            System.out.println("Disconnected to "+db+" data base");
             connection.close();
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        
+        return connection;
         
     }
     

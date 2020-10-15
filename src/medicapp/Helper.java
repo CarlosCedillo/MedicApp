@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
+import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 
@@ -131,6 +132,85 @@ public class Helper {
         }
         
         return itIs;
+    }
+    
+    public static void message(String option ){
+        
+        String message = null;
+        Integer type = null;
+        
+        switch( option ){
+            
+            case "1a":
+                message = "Faltan datos";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            case "1b":
+                message = "Las contraseñas no coinciden";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            case "1c":
+                message = "Contraseña incorrecta";
+                type = JOptionPane.ERROR_MESSAGE;
+            break;
+            
+        }
+        
+        JOptionPane.showMessageDialog(null, "<HTML><h2>"+message+"</h2></HTML>", "Mensaje", type);
+        
+    }
+    
+    public static void message(String option, String string ){
+    
+        String message = null;
+        Integer type = null;
+        
+        switch( option ){
+            
+            case "1a":
+                message = "El usuario "+string+" ya existe";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            case "1b":
+                message = "No se pudo registrar el usuario "+string;
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            case "1c":
+                message = "El usuario "+string+" no existe";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            case "2a":
+                message = "El correo "+string+" ya esta registrado";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+        }
+        
+        JOptionPane.showMessageDialog(null, "<HTML><h2>"+message+"</h2></HTML>", "Mensaje", type);
+        
+    }
+    
+    public static void message(String option, String username, String email){
+        
+        String message = null;
+        Integer type = null;
+        
+        switch( option ){
+            
+            case "1a":
+                message = "Usuario "+username+" creado exitosamente informacion mandada a "+email;
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+        }
+        
+        JOptionPane.showMessageDialog(null, "<HTML><h2>"+message+"</h2></HTML>", "Mensaje", type);
+        
     }
     
 }
