@@ -8,7 +8,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 import java.util.Random;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
@@ -210,6 +218,48 @@ public class Helper {
         }
         
         JOptionPane.showMessageDialog(null, "<HTML><h2>"+message+"</h2></HTML>", "Mensaje", type);
+        
+    }
+    
+    public static void sendEmileOk(String userEmail, String userName) throws MessagingException{
+        
+        
+        
+        Properties properties = new Properties();
+        
+        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+        properties.setProperty("mail.smtp.port", "587");
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        
+        Session session = Session.getDefaultInstance(properties);
+        
+        String appMail = "medicapphelper@gmail.com";
+        String appPass = "G52vJBqoLfEl";
+        String subject = "Bienvenido a MedicApp";
+        String content = "Hola "+userName+"\n\n"
+                + "Correo de notificación de registro de usuario en la aplicacion medicApp, favor de no responder este correo";
+        
+        MimeMessage mail = new MimeMessage(session);
+        
+        try {
+            
+            mail.setFrom(new InternetAddress (appMail));
+            mail.addRecipient(Message.RecipientType.TO, new InternetAddress (userEmail));
+            mail.setSubject(subject);
+            mail.setText(content);
+            
+            Transport transportar = session.getTransport("smtp");
+            transportar.connect(appMail,appPass);
+            transportar.sendMessage(mail, mail.getRecipients(Message.RecipientType.TO));          
+            transportar.close();
+            
+        } catch (AddressException ex) {
+            System.out.println(ex.getMessage());
+        } catch (MessagingException ex) {
+            System.out.println(ex.getMessage());
+        }
         
     }
     
