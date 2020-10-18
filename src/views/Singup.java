@@ -3,7 +3,10 @@ package views;
 import dao.impls.DoctorDaoImpl;
 import java.awt.Color;
 import java.awt.Image;
-import java.security.NoSuchAlgorithmException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import medicapp.Helper;
@@ -12,6 +15,8 @@ import medicapp.Helper;
  * @author Cageceal
  */
 public class Singup extends javax.swing.JFrame {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form Index
@@ -329,50 +334,48 @@ public class Singup extends javax.swing.JFrame {
                 
                 if( checkUsername == false ){
                     
-                    try {
+                    // 2.- Next check if the email exist in the DB
+                    String code = Helper.getCode();
+                    String encryptedMail = Helper.encrypt(code, txtEmail.getText());
+                    boolean checkEmail = docDaoImpl.existEmail( encryptedMail );
+                    if( checkEmail == false ){
                         
-                        // 2.- Next check if the email exist in the DB
-                        String encryptedMail = Helper.encrypt(txtEmail.getText());
-                        boolean checkEmail = docDaoImpl.existEmail( encryptedMail );
-                        
-                        if( checkEmail == false ){
+                        try {
                             
-                            try {
-                                
-                                String encryptedPass = Helper.encrypt(txtPassword1.getText());
-                                
-                                String doctorSex = "H";
-                                
-                                if( rbtnFemale.isSelected() == true ){
-                                    doctorSex = "M";
-                                }
-                                
-                                // 3.- Now the new user is created
-                                boolean created = docDaoImpl.create(txtUsername.getText(), encryptedPass, encryptedMail,
-                                        txtName.getText(), txtLastname1.getText(), txtLastname2.getText(), doctorSex);
-                                
-                                if( created == true ){
-                                    
-                                    Helper.message("1a", txtUsername.getText(), txtEmail.getText());
-                                    this.dispose();
-                                    
-                                    Login login = new Login();
-                                    login.setVisible(true);
-                                    
-                                }else{
-                                    Helper.message("", txtUsername.getText());
-                                }
-                                
-                            } catch (NoSuchAlgorithmException ex) {
-                                System.out.println(ex.getMessage());
+                            String encryptedPass = Helper.encrypt(code, txtPassword1.getText());
+                            
+                            String doctorSex = "H";
+                            
+                            if( rbtnFemale.isSelected() == true ){
+                                doctorSex = "M";
                             }
                             
-                        }else{
-                            Helper.message("2a", txtEmail.getText());
+                            // 3.- Now the new user is created
+                            boolean created = docDaoImpl.create(txtUsername.getText(), encryptedPass, encryptedMail,
+                                    txtName.getText(), txtLastname1.getText(), txtLastname2.getText(), doctorSex);
+                            
+                            if( created == true ){
+                                
+                                Helper.message("1a", txtUsername.getText(), txtEmail.getText());
+                                String activationCode = Helper.createCode();
+                                
+                                Helper.sendActivation(txtEmail.getText(), txtUsername.getText(), activationCode);
+                                
+                                this.dispose();
+                                
+                                Login login = new Login();
+                                login.setVisible(true);
+                                
+                            }else{
+                                Helper.message("", txtUsername.getText());
+                            }
+                            
+                        } catch (MessagingException | IOException ex) {
+                            Logger.getLogger(Singup.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         
-                    } catch (NoSuchAlgorithmException ex) {
-                        System.out.println(ex.getMessage());
+                    }else{
+                        Helper.message("2a", txtEmail.getText());
                     }
                     
                 }else{
@@ -407,15 +410,19 @@ public class Singup extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Singup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Singup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Singup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | 
+                IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Singup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

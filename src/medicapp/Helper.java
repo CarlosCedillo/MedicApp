@@ -3,13 +3,25 @@
 
 package medicapp;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -19,14 +31,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 
 /**
  * @author Cageceal
  */
 public class Helper {
     
-    public static String creteSecurityWord(){
+    public static String createCode(){
         String securityKey;
         
         // Estos son los caracteres que se puden usar
@@ -48,98 +59,79 @@ public class Helper {
         return securityKey;
     }
     
-    public static String encrypt(String string) throws NoSuchAlgorithmException{
+    public static String encrypt(String code, String text) {
         
-        String stringEncrypted;
+        String textEncrypted = null;
         
-        MessageDigest md = MessageDigest.getInstance(MessageDigestAlgorithms.MD5);
-        md.update(string.getBytes());
+        try {
+            
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            
+            byte[] llavePassword = md5.digest(code.getBytes("utf-8"));
+            byte[] BytesKey = Arrays.copyOf(llavePassword, 24);
+            
+            SecretKey key = new SecretKeySpec(BytesKey, "DESede");
+            Cipher cifrado = Cipher.getInstance("DESede");
+            cifrado.init(Cipher.ENCRYPT_MODE, key);
+            
+            byte[] plainTextBytes = text.getBytes("utf-8");
+            byte[] buf = cifrado.doFinal(plainTextBytes);
+            byte[] base64Bytes = Base64.encodeBase64(buf);
+            
+            textEncrypted = new String(base64Bytes);
+            
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
         
-        byte[] digets = md.digest();
-        
-        System.out.println();
-        
-        // Se escribe codificado base 64.
-        byte[] encrypted  = Base64.encodeBase64(digets);
-        stringEncrypted = Arrays.toString(encrypted);
-        
-        return stringEncrypted;
-        
+        return textEncrypted;
     }
     
-    public static Integer[] getTime(){
+    public static String uncrypt(String code, String text){
         
-        Integer[] time = new Integer[3];
+        String textUnencrypted = null;
         
-        Calendar calendar = new GregorianCalendar();
-        
-        time[0] = calendar.get(Calendar.HOUR_OF_DAY);
-        time[1] = calendar.get(Calendar.MINUTE);
-        time[2] = calendar.get(Calendar.SECOND);
-        
-        return time;
-    
-    }
+        try {
+            byte[] message = Base64.decodeBase64(text.getBytes("utf-8"));
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] digestOfPassword = md5.digest(code.getBytes("utf-8"));
+            byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
+            SecretKey key = new SecretKeySpec(keyBytes, "DESede");
+            Cipher decipher = Cipher.getInstance("DESede");
+            decipher.init(Cipher.DECRYPT_MODE, key);
+            byte[] plainText = decipher.doFinal(message);
+            textUnencrypted = new String(plainText, "UTF-8");
 
-    static Integer restTime(Integer[] timeStart, Integer[] timeEnd) {
-        
-        Integer hS, mS, sS;
-        hS = timeStart[0];
-        mS = timeStart[1];
-        sS = timeStart[2];
-        
-        Integer hE, mE, sE;
-        hE = timeEnd[0];
-        mE = timeEnd[1];
-        sE = timeEnd[2];
-        
-        Integer hT, mT, sT;
-        
-        //   hE:mE:sE
-        // - hS:mS:sS
-        //-------------
-        
-        if( sS > sE ){
-            sE = sE + 60;
-            mE = mE -1;
+        }   catch (
+                
+                UnsupportedEncodingException | 
+                InvalidKeyException | 
+                NoSuchAlgorithmException | 
+                BadPaddingException | 
+                IllegalBlockSizeException | 
+                NoSuchPaddingException ex)
+                
+            {
+                
+            System.out.println(ex.getMessage());
         }
         
-        sT = sE - sS;
-        
-        if( mS > mE ){
-            mE = mE + 60;
-            hE = hE - 1;
-        }
-        
-        mT = mE - mS;
-        
-        if( hE == 0 ){
-            hE = 24;
-        }
-        
-        if( hS == 0 ){
-            hS = 24;
-        }
-        
-        hT = hE - hS;
-        
-        Integer timeInSeconds = sT + (mT *60 ) + (hT * 3600);
-        return timeInSeconds;
+        return textUnencrypted;
         
     }
     
-    public static boolean validation (Integer seconds, Integer limit){
-        boolean itIs;
+    static String getDate () {
         
-        //The limit must be in seconds
+        String fullDate = null; 
         
-        if( seconds > limit ){
-            itIs = false;
-        }else{
-            itIs = true;
-        }
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        fullDate = dateFormat.format(date);
         
-        return itIs;
+        System.out.println(fullDate);
+        
+        return fullDate;
+        
     }
     
     public static void message(String option ){
@@ -211,7 +203,7 @@ public class Helper {
         switch( option ){
             
             case "1a":
-                message = "Usuario "+username+" creado exitosamente informacion mandada a "+email;
+                message = "Usuario "+username+" creado exitosamente, clave de activacion mandada a "+email+"";
                 type = JOptionPane.INFORMATION_MESSAGE;
             break;
             
@@ -221,9 +213,7 @@ public class Helper {
         
     }
     
-    public static void sendEmileOk(String userEmail, String userName) throws MessagingException{
-        
-        
+    public static void sendActivation(String userEmail, String userName, String activationCode) throws MessagingException, IOException{
         
         Properties properties = new Properties();
         
@@ -235,24 +225,26 @@ public class Helper {
         
         Session session = Session.getDefaultInstance(properties);
         
-        String appMail = "medicapphelper@gmail.com";
-        String appPass = "G52vJBqoLfEl";
+        String email = getEmail();
+        String password = getPassword();
+        
         String subject = "Bienvenido a MedicApp";
         String content = "Hola "+userName+"\n\n"
-                + "Correo de notificación de registro de usuario en la aplicacion medicApp, favor de no responder este correo";
+                + "Este correo es para notificarle su dada de alta a la aplicacion MedicApp, como ultimo paso, por favor "
+                + "ingrese el siguinte codigo para activar su cuenta: \n\n"+activationCode;
         
         MimeMessage mail = new MimeMessage(session);
         
         try {
             
-            mail.setFrom(new InternetAddress (appMail));
+            mail.setFrom(new InternetAddress (email));
             mail.addRecipient(Message.RecipientType.TO, new InternetAddress (userEmail));
             mail.setSubject(subject);
             mail.setText(content);
             
             Transport transportar = session.getTransport("smtp");
-            transportar.connect(appMail,appPass);
-            transportar.sendMessage(mail, mail.getRecipients(Message.RecipientType.TO));          
+            transportar.connect(email,password);
+            transportar.sendMessage(mail, mail.getRecipients(Message.RecipientType.TO));
             transportar.close();
             
         } catch (AddressException ex) {
@@ -263,4 +255,87 @@ public class Helper {
         
     }
     
+    public static String getEmail() {
+        
+        String content = "", email = null;
+        
+        try {
+            
+            File util = new File("src\\medicapp\\util.txt");
+            FileReader fileReader = new FileReader(util);
+            int c = 0;
+            
+            while( c != -1 ){
+                c = fileReader.read();
+                char letter = (char)c;
+                content += letter;
+            }
+        
+            Integer str = content.indexOf("email=") + 6;
+            Integer end = content.indexOf("pass=");
+            email = content.substring(str, end);
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return email;
+        
+    }
+
+    public static String getPassword() {
+        
+        String content = "", password = null;
+        
+        try {
+            
+            File util = new File("src\\medicapp\\util.txt");
+            FileReader fileReader = new FileReader(util);
+            int c = 0;
+            
+            while( c != -1 ){
+                c = fileReader.read();
+                char letter = (char)c;
+                content += letter;
+            }
+            
+            Integer str = content.indexOf("pass=") + 5;
+            Integer end = content.indexOf("code");
+            password = content.substring(str, end);
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return password;
+        
+    }
+    
+    public static String getCode(){
+        
+        String content = "", code = null;
+        
+        try {
+            
+            File util = new File("src\\medicapp\\util.txt");
+            FileReader fileReader = new FileReader(util);
+            int c = 0;
+            
+            while( c != -1 ){
+                c = fileReader.read();
+                char letter = (char)c;
+                content += letter;
+            }
+            
+            Integer str = content.indexOf("code=") + 5;
+            Integer end = content.length() - 1;
+            code = content.substring(str,end);
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return code;
+    }
+
 }

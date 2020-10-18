@@ -3,8 +3,6 @@ package views;
 import dao.impls.DoctorDaoImpl;
 import java.awt.Color;
 import java.awt.Image;
-import java.security.NoSuchAlgorithmException;
-import static javafx.application.Platform.exit;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import medicapp.Helper;
@@ -13,6 +11,8 @@ import medicapp.Helper;
  * @author Cageceal
  */
 public class Login extends javax.swing.JFrame {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form Index
@@ -169,25 +169,17 @@ public class Login extends javax.swing.JFrame {
             
             if( checkUsername == true ){
                 
-                try {
+                String code = Helper.getCode();
+                // 2.- Now check if the password is the same
+                String encryptedPassword = Helper.encrypt(code, txtPassword.getText());
+                boolean logined = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
+                if( logined == true ){
                     
-                    // 2.- Now check if the password is the same
-                    String encryptedPassword = Helper.encrypt(txtPassword.getText());
+                    // Here start the wolcome view
+                    System.out.println("Not sopported yet...");
                     
-                    boolean logined = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
-                    
-                    if( logined == true ){
-                        
-                        // Here start the wolcome view
-                        System.out.println("Not sopported yet...");
-                        exit();
-                        
-                    }else{
-                        Helper.message("1c");
-                    }
-                    
-                } catch (NoSuchAlgorithmException ex) {
-                    System.out.println(ex.getMessage());
+                }else{
+                    Helper.message("1c");
                 }
                 
             }else{

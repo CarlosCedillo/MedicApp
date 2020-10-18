@@ -4,6 +4,7 @@
 package medicapp;
 
 import dataBase.DataBase;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.mail.MessagingException;
@@ -19,7 +20,7 @@ public class MedicApp {
      * @throws java.sql.SQLException
      * @throws java.security.NoSuchAlgorithmException
      */
-    public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, MessagingException {
+    public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, MessagingException, IOException {
         
 //        System.out.println("----- Starting MedicApp, created by Carlos Gerardo Cedillo Alcántar -----");
 //        
@@ -29,8 +30,6 @@ public class MedicApp {
 //        Login login = new Login();
 //        login.setVisible(true);
 
-        Helper.sendEmileOk("cageceal@gmail.com", "Cageceal");
-        
     }
 
 }
