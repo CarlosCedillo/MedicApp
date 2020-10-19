@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Sat Oct 17 16:41:34 MDT 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0175-38b9-ad88-00000732c6b0 
-on database directory C:\Users\cgca_\Documents\NetBeansProyects\MedicApp\DB\MedicApp.DB with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
+Sun Oct 18 18:41:52 MDT 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0175-3e4e-2c46-000007285370 
+on database directory C:\Users\cgca_\Documents\NetBeansProyects\MedicApp\DB\MedicApp.DB with class loader sun.misc.Launcher$AppClassLoader@6bc7c054 
 Loaded from file:/C:/Users/cgca_/Documents/NetBeansProyects/MedicApp/src/libreries/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_111-b14

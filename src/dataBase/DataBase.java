@@ -84,7 +84,7 @@ public class DataBase {
         
         try {
             
-            System.out.println("Disconnected to "+db+" data base");
+            System.out.println("Disconnected to "+db+" data base\n");
             connection.close();
             
         } catch (SQLException e) {

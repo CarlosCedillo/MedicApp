@@ -22,14 +22,14 @@ public class MedicApp {
      */
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, MessagingException, IOException {
         
-//        System.out.println("----- Starting MedicApp, created by Carlos Gerardo Cedillo Alcántar -----");
-//        
-//        DataBase dataBase = new DataBase();
-//        dataBase.createDB();
-//        
-//        Login login = new Login();
-//        login.setVisible(true);
-
+        System.out.println("----- Starting MedicApp, created by Carlos Gerardo Cedillo Alcántar -----");
+        
+        DataBase dataBase = new DataBase();
+        dataBase.createDB();
+        
+        Login login = new Login();
+        login.setVisible(true);
+        
     }
 
 }

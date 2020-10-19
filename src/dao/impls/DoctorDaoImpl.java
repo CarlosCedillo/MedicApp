@@ -1,7 +1,8 @@
 /* 
+TABLE doctors
 doctorUserName varchar(30)
-password varchar(150)
-doctorEmail varchar(150)
+password varchar(50
+doctorEmail varchar(80)
 doctorName varchar(50)
 doctorLastName1 varchar(50)
 doctorLastName2 varchar(50)

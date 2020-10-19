@@ -4,8 +4,6 @@ import dao.impls.DoctorDaoImpl;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -304,7 +302,8 @@ public class Singup extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGoBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoBackActionPerformed
-        
+
+        System.out.println("Closing "+this.getClass()+"\n");
         Login login = new Login();
         login.setVisible(true);
         this.dispose();
@@ -314,6 +313,7 @@ public class Singup extends javax.swing.JFrame {
     @SuppressWarnings({"deprecation", "deprecation"})
     private void btnSingupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSingupActionPerformed
         
+        // Check if the form is filled in
         if(
             txtUsername.getText().isEmpty() != true &&
             txtEmail.getText().isEmpty() != true &&
@@ -326,16 +326,18 @@ public class Singup extends javax.swing.JFrame {
                 rbtnFemale.isSelected() != false )
         ){
             
+            // Check if the passwords match
             if( txtPassword1.getText().equals(txtPassword2.getText()) ){
                 
                 // 1.- First check if the username exist in th DB
                 DoctorDaoImpl docDaoImpl = new DoctorDaoImpl();
+                System.out.println("\nVerifaying user "+txtUsername.getText()+" does not exist in DB");
                 boolean checkUsername = docDaoImpl.existUsername( txtUsername.getText() );
-                
                 if( checkUsername == false ){
                     
                     // 2.- Next check if the email exist in the DB
                     String code = Helper.getCode();
+                    System.out.println("Verifaying email "+txtEmail.getText()+" does not exist in DB");
                     String encryptedMail = Helper.encrypt(code, txtEmail.getText());
                     boolean checkEmail = docDaoImpl.existEmail( encryptedMail );
                     if( checkEmail == false ){
@@ -343,52 +345,62 @@ public class Singup extends javax.swing.JFrame {
                         try {
                             
                             String encryptedPass = Helper.encrypt(code, txtPassword1.getText());
+                            String doctorSex="";
                             
-                            String doctorSex = "H";
+                            if( rbtnMale.isSelected() == true ){
+                                doctorSex = "H";
+                            }
                             
                             if( rbtnFemale.isSelected() == true ){
                                 doctorSex = "M";
                             }
                             
                             // 3.- Now the new user is created
+                            System.out.println("Creating user "+txtUsername.getText());
                             boolean created = docDaoImpl.create(txtUsername.getText(), encryptedPass, encryptedMail,
                                     txtName.getText(), txtLastname1.getText(), txtLastname2.getText(), doctorSex);
                             
                             if( created == true ){
                                 
-                                Helper.message("1a", txtUsername.getText(), txtEmail.getText());
-                                String activationCode = Helper.createCode();
-                                
+                                String activationCode = Helper.createCode(6);
                                 Helper.sendActivation(txtEmail.getText(), txtUsername.getText(), activationCode);
+                                
+                                Helper.message("1a", txtUsername.getText(), txtEmail.getText());
+                                System.out.println("User "+txtUsername.getText()+" created successfully\n");
                                 
                                 this.dispose();
                                 
-                                Login login = new Login();
-                                login.setVisible(true);
+                                //Now show a window where the user must enter the "activation key" that was sended to the email
+                                Confirmation confirmation = new Confirmation(activationCode);
+                                confirmation.setVisible(true);
                                 
-                            }else{
-                                Helper.message("", txtUsername.getText());
                             }
                             
                         } catch (MessagingException | IOException ex) {
-                            Logger.getLogger(Singup.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println(ex.getMessage());
                         }
                         
                     }else{
+                        // If the mail exist
+                        System.out.println("The email "+txtEmail.getText()+" is already been used");
                         Helper.message("2a", txtEmail.getText());
                     }
                     
                 }else{
+                    // If the username exist
+                    System.out.println("User "+txtUsername.getText()+" already exist in DB\n");
                     Helper.message("1a", txtUsername.getText());
                 }
                 
             }else{
                 // if the passwords not match
+                System.out.println("The passwords does not match\n");
                 Helper.message("1b");
             }
         
         }else{
-            // if comething is missing on the formulary
+            // if comething is missing on the form
+            System.out.println("Must fill in all the fields\n");
             Helper.message("1a");
         }
         

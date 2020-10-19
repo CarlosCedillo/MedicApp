@@ -10,10 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
 import javax.crypto.BadPaddingException;
@@ -37,7 +34,7 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class Helper {
     
-    public static String createCode(){
+    public static String createCode(Integer length){
         String securityKey;
         
         // Estos son los caracteres que se puden usar
@@ -47,7 +44,7 @@ public class Helper {
         Random random = new Random();
         
         // Aqui se genera la palabra de 10 caracteres
-        for( int i = 0 ; i < 10 ; i++ ){
+        for( int i = 0 ; i < length ; i++ ){
             
             char c = chars[random.nextInt(chars.length)];
             createdString.append(c);
@@ -120,19 +117,7 @@ public class Helper {
         
     }
     
-    static String getDate () {
-        
-        String fullDate = null; 
-        
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        fullDate = dateFormat.format(date);
-        
-        System.out.println(fullDate);
-        
-        return fullDate;
-        
-    }
+    // - Here are messeges to the user
     
     public static void message(String option ){
         
@@ -153,6 +138,11 @@ public class Helper {
             
             case "1c":
                 message = "Contraseña incorrecta";
+                type = JOptionPane.ERROR_MESSAGE;
+            break;
+            
+            case "1d":
+                message = "Código incorrecto";
                 type = JOptionPane.ERROR_MESSAGE;
             break;
             
@@ -255,7 +245,7 @@ public class Helper {
         
     }
     
-    public static String getEmail() {
+    private static String getEmail() {
         
         String content = "", email = null;
         
@@ -283,7 +273,7 @@ public class Helper {
         
     }
 
-    public static String getPassword() {
+    private static String getPassword() {
         
         String content = "", password = null;
         
