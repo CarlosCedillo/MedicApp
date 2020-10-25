@@ -24,7 +24,7 @@ public class Welcome extends javax.swing.JFrame {
         this.setTitle("MedicApp / Welcome");
         this.setLocationRelativeTo(null);
         
-        System.out.println("Now is visible "+this.getClass());
+        System.out.println("---- Now is visible: "+this.getClass()+" ----");
         
     }
 

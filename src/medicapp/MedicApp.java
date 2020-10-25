@@ -19,6 +19,8 @@ public class MedicApp {
      * @param args the command line arguments
      * @throws java.sql.SQLException
      * @throws java.security.NoSuchAlgorithmException
+     * @throws javax.mail.MessagingException
+     * @throws java.io.IOException
      */
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, MessagingException, IOException {
         
@@ -29,7 +31,7 @@ public class MedicApp {
         
         Login login = new Login();
         login.setVisible(true);
-        
+
     }
 
 }

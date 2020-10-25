@@ -1,6 +1,19 @@
+/*
+TABLE doctors
+    doctorUserName varchar(50)      1
+    password varchar(50)            2
+    doctorEmail varchar(80          3
+    doctorName varchar(50)          4
+    doctorLastName1 varchar(50)     5
+    doctorLastName2 varchar(50)     6
+    doctorSex varchar(1)            7
+    activated boolean               8
+ */
+
 package views;
 
 import dao.impls.DoctorDaoImpl;
+import dao.entities.Doctors;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
@@ -16,26 +29,21 @@ public class Singup extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Creates new form Index
-     */
     public Singup() {
-        
+
         initComponents();
         this.getContentPane().setBackground(Color.DARK_GRAY);
-        //pnlAccount.setBackground(Color.black);
-        
+
         this.setTitle("MedicApp");
         Image image = new ImageIcon(getClass().getResource("/images/icon.png")).getImage();
         setIconImage(image);
-        
+
         ImageIcon logo = new ImageIcon(getClass().getResource("/images/MedicApp_Logo_1.png"));
-        Icon showLogo = new ImageIcon(logo.getImage().getScaledInstance(lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_DEFAULT));
+        Icon showLogo = new ImageIcon(logo.getImage().getScaledInstance(lblLogo.getWidth(), lblLogo.getHeight(),
+                Image.SCALE_DEFAULT));
         lblLogo.setIcon(showLogo);
-        
+
         this.setLocationRelativeTo(null);
-        
-        System.out.println("Now is visible "+this.getClass());
         
     }
 
@@ -303,107 +311,93 @@ public class Singup extends javax.swing.JFrame {
 
     private void btnGoBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoBackActionPerformed
 
-        System.out.println("Closing "+this.getClass()+"\n");
         Login login = new Login();
         login.setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_btnGoBackActionPerformed
 
     @SuppressWarnings({"deprecation", "deprecation"})
     private void btnSingupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSingupActionPerformed
-        
-        // Check if the form is filled in
-        if(
-            txtUsername.getText().isEmpty() != true &&
-            txtEmail.getText().isEmpty() != true &&
-            txtPassword1.getText().isEmpty() != true &&
-            txtPassword2.getText().isEmpty() != true &&
-            txtName.getText().isEmpty() != true &&
-            txtLastname1.getText().isEmpty() != true &&
-            txtLastname2.getText().isEmpty() != true && 
-            (   rbtnMale.isSelected() != false || 
-                rbtnFemale.isSelected() != false )
-        ){
-            
-            // Check if the passwords match
-            if( txtPassword1.getText().equals(txtPassword2.getText()) ){
-                
-                // 1.- First check if the username exist in th DB
-                DoctorDaoImpl docDaoImpl = new DoctorDaoImpl();
-                System.out.println("\nVerifaying user "+txtUsername.getText()+" does not exist in DB");
-                boolean checkUsername = docDaoImpl.existUsername( txtUsername.getText() );
-                if( checkUsername == false ){
+
+        // 1.1.- Check all fields are filled
+        if (txtUsername.getText().isEmpty() != true && txtEmail.getText().isEmpty() != true
+                && txtPassword1.getText().isEmpty() != true && txtPassword2.getText().isEmpty() != true
+                && txtName.getText().isEmpty() != true && txtLastname1.getText().isEmpty() != true
+                && txtLastname2.getText().isEmpty() != true
+                && (rbtnMale.isSelected() != false || rbtnFemale.isSelected() != false)) {
+
+            //1.2.- Check the password match
+            if (txtPassword1.getText().equals(txtPassword2.getText()) == true) {
+
+                // 2.- Check if username is on the DB
+                DoctorDaoImpl doctorDaoImpl = new DoctorDaoImpl();
+                boolean checkUsername = doctorDaoImpl.existUsername(txtUsername.getText());
+                if (checkUsername == false) {
                     
-                    // 2.- Next check if the email exist in the DB
-                    String code = Helper.getCode();
-                    System.out.println("Verifaying email "+txtEmail.getText()+" does not exist in DB");
-                    String encryptedMail = Helper.encrypt(code, txtEmail.getText());
-                    boolean checkEmail = docDaoImpl.existEmail( encryptedMail );
-                    if( checkEmail == false ){
+                    // 3.- Check if email is on the DB (encrypted)
+                    String encryptedEmail = Helper.encrypt(Helper.getCode(), txtEmail.getText());
+                    boolean checkEmail = doctorDaoImpl.existEmail(encryptedEmail);
+                    if (checkEmail == false) {
+
+                        // 4.1.- Create a new Doctor in DB
+                        String encryptedPassword = Helper.encrypt(Helper.getCode(), txtPassword1.getText());
+                        String doctorSex = null;
                         
-                        try {
+                        if( rbtnFemale.isSelected() == true ){doctorSex = "M";}
+                        if( rbtnMale.isSelected() == true ){doctorSex = "H";}
+                        
+                        Doctors doctor = new Doctors();
+                        doctor.setUserName(txtUsername.getText());              //1
+                        doctor.setPassword(encryptedPassword);                  //2
+                        doctor.setEmail(encryptedEmail);                        //3
+                        doctor.setName(txtName.getText());                      //4
+                        doctor.setLastName1(txtLastname1.getText());            //5
+                        doctor.setLastName2(txtLastname2.getText());            //6
+                        doctor.setSex(doctorSex);                               //7
+                        doctor.setActivated(false);                             //8
+                        
+                        boolean created = doctorDaoImpl.create(doctor);
+                        
+                        if( created == true ){
                             
-                            String encryptedPass = Helper.encrypt(code, txtPassword1.getText());
-                            String doctorSex="";
                             
-                            if( rbtnMale.isSelected() == true ){
-                                doctorSex = "H";
-                            }
-                            
-                            if( rbtnFemale.isSelected() == true ){
-                                doctorSex = "M";
-                            }
-                            
-                            // 3.- Now the new user is created
-                            System.out.println("Creating user "+txtUsername.getText());
-                            boolean created = docDaoImpl.create(txtUsername.getText(), encryptedPass, encryptedMail,
-                                    txtName.getText(), txtLastname1.getText(), txtLastname2.getText(), doctorSex);
-                            
-                            if( created == true ){
+                            try {
                                 
+                                // Send email: New user
                                 String activationCode = Helper.createCode(6);
-                                Helper.sendActivation(txtEmail.getText(), txtUsername.getText(), activationCode);
-                                
-                                Helper.message("1a", txtUsername.getText(), txtEmail.getText());
-                                System.out.println("User "+txtUsername.getText()+" created successfully\n");
-                                
+                                Helper.sendEmail(1, txtUsername.getText(), txtEmail.getText(), activationCode);
+//                                Helper.messageUser("1a", txtUsername.getText(), txtEmail.getText());
                                 this.dispose();
-                                
-                                //Now show a window where the user must enter the "activation key" that was sended to the email
-                                Confirmation confirmation = new Confirmation(activationCode);
-                                confirmation.setVisible(true);
-                                
+                            
+                                // 4.2.- Show activate view to activate the account
+                                Activate activate = new Activate(txtUsername.getText(), txtEmail.getText(), activationCode);
+                                activate.setVisible(true);
+
+                            } catch (MessagingException | IOException ex) {
+                                System.out.println(ex.getMessage());
                             }
                             
-                        } catch (MessagingException | IOException ex) {
-                            System.out.println(ex.getMessage());
+                        }else{
+                            // If the doctor was not crate
                         }
-                        
-                    }else{
-                        // If the mail exist
-                        System.out.println("The email "+txtEmail.getText()+" is already been used");
-                        Helper.message("2a", txtEmail.getText());
+
+                    } else {
+                        // If the email exist in DB
                     }
-                    
-                }else{
-                    // If the username exist
-                    System.out.println("User "+txtUsername.getText()+" already exist in DB\n");
-                    Helper.message("1a", txtUsername.getText());
+
+                } else {
+                    // If the username exist in DB
                 }
-                
-            }else{
-                // if the passwords not match
-                System.out.println("The passwords does not match\n");
-                Helper.message("1b");
+
+            } else {
+                // If passwords does not match
             }
-        
-        }else{
-            // if comething is missing on the form
-            System.out.println("Must fill in all the fields\n");
-            Helper.message("1a");
+
+        } else {
+            // If some field is missing
         }
-        
+
     }//GEN-LAST:event_btnSingupActionPerformed
 
     /**
@@ -422,8 +416,8 @@ public class Singup extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | 
-                IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Singup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -434,7 +428,7 @@ public class Singup extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

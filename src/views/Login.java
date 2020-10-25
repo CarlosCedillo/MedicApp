@@ -3,6 +3,8 @@ package views;
 import dao.impls.DoctorDaoImpl;
 import java.awt.Color;
 import java.awt.Image;
+import java.io.IOException;
+import javax.mail.MessagingException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import medicapp.Helper;
@@ -14,9 +16,6 @@ public class Login extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Creates new form Index
-     */
     public Login() {
         
         initComponents();
@@ -35,7 +34,8 @@ public class Login extends javax.swing.JFrame {
         lblUsername.setForeground(Color.WHITE);
         lblPassword.setForeground(Color.WHITE);
         
-        System.out.println("Now is visible "+this.getClass());
+        Helper.messegeConsol("viwOpn", this.getClass().toString());
+        emptyLine();
         
     }
 
@@ -151,7 +151,7 @@ public class Login extends javax.swing.JFrame {
 
     private void btnSingupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSingupActionPerformed
         
-        System.out.println("Closing "+this.getClass()+"\n");
+        Helper.messegeConsol("viwCls", this.getClass().toString());
         Singup singup = new Singup();
         this.dispose();
         singup.setVisible(true);
@@ -161,43 +161,78 @@ public class Login extends javax.swing.JFrame {
     @SuppressWarnings("deprecation")
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         
-        // Chech that the form is filled in
-        if( txtUsername.getText().isEmpty() != true && txtPassword.getText().isEmpty() != true ){
+        // 1.- Check all fields are filled
+        if( txtUsername.getText().isEmpty() == false && txtPassword.getText().isEmpty() == false ){
             
             DoctorDaoImpl doctorDaoImpl = new DoctorDaoImpl();
             
-            // 1.- Check if the username exist in the DB
-            System.out.println("Verifaying user "+txtUsername.getText()+" exist in DB");
-            boolean checkUsername = doctorDaoImpl.existUsername(txtUsername.getText());
-            if( checkUsername == true ){
+            // 2.- Check login
+            String encryptedPassword = Helper.encrypt(Helper.getCode(), txtPassword.getText());
+            Helper.messegeConsol("logChk", txtUsername.getText());
+            boolean loggedin = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
+            if( loggedin == true ){
                 
-                String code = Helper.getCode();
-                // 2.- Now check if the password is the same in the DB
-                System.out.println("comparing the password with the DB");
-                String encryptedPassword = Helper.encrypt(code, txtPassword.getText());
-                boolean loggedin = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
-                if( loggedin == true ){
+                Helper.messegeConsol("logOk", txtUsername.getText());
+                // 3.- Check if the account is activate
+                Helper.messegeConsol("acoChk", txtUsername.getText());
+                boolean activated = doctorDaoImpl.getActivated(txtUsername.getText());
+                if( activated == true ){
                     
-                    // Here start the wolcome view
+                    Helper.messegeConsol("acoOk", txtUsername.getText());
+                    emptyLine();
+                    Helper.messegeConsol("viwCls", this.getClass().toString());
+                    this.dispose();
+                    
                     Welcome welcome = new Welcome();
                     welcome.setVisible(true);
                     
                 }else{
-                    //If the password does not match with the DB
-                    System.out.println("Wrong password\n");
-                    Helper.message("1c");
+                    
+                    Helper.messegeConsol("acoNo", txtUsername.getText());
+                    
+                    try {
+                        
+                        // Get email (encrypted and unencrypt) of username
+                        Helper.messegeConsol("getEmail", txtUsername.getText());
+                        String encryptedEmail = doctorDaoImpl.getEmail(txtUsername.getText());
+                        String doctorEmail = Helper.uncrypt(Helper.getCode(), encryptedEmail);
+                        
+                        // Create a new activation code
+                        String activationCode = Helper.createCode(6);
+                        
+                        // Send the activation code to email
+                        Helper.sendEmail(3, txtUsername.getText(), doctorEmail, activationCode);
+                        
+                        Helper.messegeConsol("sndActCde", txtUsername.getText(), doctorEmail);
+                        emptyLine();
+                        Helper.messageUser("nvoCdg", txtUsername.getText(), doctorEmail);
+                        
+                        Helper.messegeConsol("viwCls", this.getClass().toString());
+                        this.dispose();
+                        
+                        // Show activate view
+                        Activate activate = new Activate(txtUsername.getText(), doctorEmail, activationCode);
+                        activate.setVisible(true);
+                        
+                    } catch (MessagingException | IOException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    
                 }
                 
             }else{
-                // if the username does not exist in the DB
-                System.out.println("User does not exist in DB\n");
-                Helper.message("1c", txtUsername.getText());
+                // If login fail
+                Helper.messegeConsol("logNo", txtUsername.getText());
+                emptyLine();
+                Helper.messageUser("logNo");
             }
             
         }else{
-            // If the form is missing some field
-            System.out.println("Must fill in all the fields\n");
-            Helper.message("1a");
+            // If some filed is missing
+            Helper.messegeConsol("FormNo");
+            emptyLine();
+            Helper.messageUser("FormNo");
+            
         }
         
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -206,11 +241,13 @@ public class Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -218,15 +255,13 @@ public class Login extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | 
+                javax.swing.UnsupportedLookAndFeelException ex) {
+            System.out.println(ex.getMessage());
         }
+        
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -249,4 +284,9 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
+
+    private void emptyLine() {
+        System.out.println("");
+    }
+    
 }

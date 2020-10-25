@@ -12,8 +12,8 @@ import java.sql.SQLException;
  */
 public class DataBase {
     
-    Connection connection = null;
-    String db = "MedicApp";
+    private Connection connection = null;
+    private String db = "MedicApp";
     
     public Connection createDB() throws SQLException{
         
@@ -30,13 +30,14 @@ public class DataBase {
                 System.out.println("\n"+db+" data base created");
                 
                 String createDoctors = "CREATE TABLE doctors ("
-                        + "doctorUserName varchar(30), "
+                        + "doctorUserName varchar(50), "
                         + "password varchar(50), "
                         + "doctorEmail varchar(80), "
                         + "doctorName varchar(50), "
                         + "doctorLastName1 varchar(50), "
                         + "doctorLastName2 varchar(50), "
-                        + "doctorSex varchar(1))";
+                        + "doctorSex varchar(1), "
+                        + "activated boolean)";
                 
                 try {
                     
@@ -84,7 +85,7 @@ public class DataBase {
         
         try {
             
-            System.out.println("Disconnected to "+db+" data base\n");
+            System.out.println("Disconnected to "+db+" data base");
             connection.close();
             
         } catch (SQLException e) {
