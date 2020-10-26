@@ -34,7 +34,7 @@ public class Login extends javax.swing.JFrame {
         lblUsername.setForeground(Color.WHITE);
         lblPassword.setForeground(Color.WHITE);
         
-        Helper.consolMessege("viwOpn", this.getClass().toString());
+        Helper.consoleMessege("viwOpn", this.getClass().toString());
         emptyLine();
         
     }
@@ -151,7 +151,7 @@ public class Login extends javax.swing.JFrame {
 
     private void btnSingupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSingupActionPerformed
         
-        Helper.consolMessege("viwCls", this.getClass().toString());
+        Helper.consoleMessege("viwCls", this.getClass().toString());
         Singup singup = new Singup();
         this.dispose();
         singup.setVisible(true);
@@ -168,19 +168,19 @@ public class Login extends javax.swing.JFrame {
             
             // 2.- Check login
             String encryptedPassword = Helper.encrypt(Helper.getCode(), txtPassword.getText());
-            Helper.consolMessege("logChk", txtUsername.getText());
+            Helper.consoleMessege("logChk", txtUsername.getText());
             boolean loggedin = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
             if( loggedin == true ){
                 
-                Helper.consolMessege("logChkOk", txtUsername.getText());
+                Helper.consoleMessege("logChkOk", txtUsername.getText());
                 // 3.- Check if the account is activate
-                Helper.consolMessege("acoChk", txtUsername.getText());
+                Helper.consoleMessege("acoChk", txtUsername.getText());
                 boolean activated = doctorDaoImpl.getActivated(txtUsername.getText());
                 if( activated == true ){
                     
-                    Helper.consolMessege("acoChkOk", txtUsername.getText());
+                    Helper.consoleMessege("acoChkOk", txtUsername.getText());
                     emptyLine();
-                    Helper.consolMessege("viwCls", this.getClass().toString());
+                    Helper.consoleMessege("viwCls", this.getClass().toString());
                     this.dispose();
                     
                     Welcome welcome = new Welcome();
@@ -188,12 +188,12 @@ public class Login extends javax.swing.JFrame {
                     
                 }else{
                     
-                    Helper.consolMessege("acoChkNo", txtUsername.getText());
+                    Helper.consoleMessege("acoChkNo", txtUsername.getText());
                     
                     try {
                         
                         // Get email (encrypted and unencrypt) of username
-                        Helper.consolMessege("getEmail", txtUsername.getText());
+                        Helper.consoleMessege("getEmail", txtUsername.getText());
                         String encryptedEmail = doctorDaoImpl.getEmail(txtUsername.getText());
                         String doctorEmail = Helper.uncrypt(Helper.getCode(), encryptedEmail);
                         
@@ -203,11 +203,11 @@ public class Login extends javax.swing.JFrame {
                         // Send the activation code to email
                         Helper.sendEmail(3, txtUsername.getText(), doctorEmail, activationCode);
                         
-                        Helper.consolMessege("sndActCde", txtUsername.getText(), doctorEmail);
+                        Helper.consoleMessege("sndActCde", txtUsername.getText(), doctorEmail);
                         emptyLine();
                         Helper.userMessage("newCde", txtUsername.getText(), doctorEmail);
                         
-                        Helper.consolMessege("viwCls", this.getClass().toString());
+                        Helper.consoleMessege("viwCls", this.getClass().toString());
                         this.dispose();
                         
                         // Show activate view
@@ -222,14 +222,14 @@ public class Login extends javax.swing.JFrame {
                 
             }else{
                 // If login fail
-                Helper.consolMessege("logChkNo", txtUsername.getText());
+                Helper.consoleMessege("logChkNo", txtUsername.getText());
                 emptyLine();
                 Helper.userMessage("logNo");
             }
             
         }else{
             // If some filed is missing
-            Helper.consolMessege("FormNo");
+            Helper.consoleMessege("FormNo");
             emptyLine();
             Helper.userMessage("FormNo");
             
