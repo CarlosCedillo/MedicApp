@@ -374,9 +374,9 @@ public class Helper {
     
     }
     
-    //  Here on are the messages to consol
+    //  Here on are the messages to console
     
-    public static void consolMessege(String code){
+    public static void consoleMessege(String code){
         
         String message = null;
         
@@ -396,7 +396,7 @@ public class Helper {
         
     }
     
-    public static void consolMessege(String code, String string){
+    public static void consoleMessege(String code, String string){
         
         String message = null;
         
@@ -488,7 +488,7 @@ public class Helper {
         
     }
     
-    public static void consolMessege(String code, String userName, String email){
+    public static void consoleMessege(String code, String userName, String email){
         
         String message = null;
         
