@@ -270,7 +270,7 @@ public class Helper {
       
     //  Here on are the messages to user
     
-    public static void messageUser(String code){
+    public static void userMessage(String code){
         
         String messageUser = null;
         Integer type = null;
@@ -308,7 +308,7 @@ public class Helper {
     
     }
     
-    public static void messageUser(String code, String string){
+    public static void userMessage(String code, String string){
         
         String messageUser = null;
         Integer type = null;
@@ -346,7 +346,7 @@ public class Helper {
     
     }
     
-    public static void messageUser(String code, String userName, String email){
+    public static void userMessage(String code, String userName, String email){
         
         String messageUser = null;
         Integer type = null;
@@ -363,7 +363,7 @@ public class Helper {
                 type = JOptionPane.INFORMATION_MESSAGE;
             break;
             
-            case "nvoCdg":
+            case "newCde":
                 messageUser = "Código de activacion de "+userName+" enviado a "+email ;
                 type = JOptionPane.INFORMATION_MESSAGE;
             break;
@@ -376,7 +376,7 @@ public class Helper {
     
     //  Here on are the messages to consol
     
-    public static void messegeConsol(String code){
+    public static void consolMessege(String code){
         
         String message = null;
         
@@ -396,7 +396,7 @@ public class Helper {
         
     }
     
-    public static void messegeConsol(String code, String string){
+    public static void consolMessege(String code, String string){
         
         String message = null;
         
@@ -418,12 +418,12 @@ public class Helper {
                 message = "Cheking login: "+string;
             break;
             
-            case "logOk":
-                message = string+" login: Success";
+            case "logChkOk":
+                message = "User "+string+" login: Success";
             break;
             
-            case "logNo":
-                message = string+" login: failed";
+            case "logChkNo":
+                message = "User "+string+" login: failed";
             break;
             
             // Singup
@@ -432,12 +432,24 @@ public class Helper {
                 message = "Searching user: "+string;
             break;
     
-            case "usrOk":
+            case "usrChkYs":
                 message = "User "+string+": Founded";
             break;
             
-            case "usrNo":
+            case "usrChkNo":
                 message = "User "+string+": Not founded";
+            break;
+            
+            case "emlChk":
+                message = "Searching email: "+string;
+            break;
+            
+            case "emlChkYs":
+                message = "Email "+string+": Found";
+            break;
+            
+            case "emlChkNo":
+                message = "Email "+string+": Not found";
             break;
             
             case "usrCrt":
@@ -445,23 +457,11 @@ public class Helper {
             break;
             
             case "usrCrtOk":
-                message = string+" create: Success";
+                message = "User "+string+": Created successfully";
             break;
             
             case "usrCrtNo":
-                message = string+" create: Fail";
-            break;
-            
-            case "emlChk":
-                message = "Searching email: "+string;
-            break;
-            
-            case "emlOk":
-                message = "Email "+string+": Found";
-            break;
-            
-            case "emlNo":
-                message = "Email "+string+": Not found";
+                message = "User "+string+": Not created";
             break;
             
             // Activate
@@ -474,12 +474,12 @@ public class Helper {
                 message = "Checking activated account: "+string;
             break;
             
-            case "acoOk":
-                message = string+" account: Activated";
+            case "acoChkOk":
+                message = "User "+string+" account: Activated";
             break;
             
-            case "acoNo":
-                message = string+" account: Not activated";
+            case "acoChkNo":
+                message = "User "+string+" account: Not activated";
             break;
             
         }
@@ -488,7 +488,7 @@ public class Helper {
         
     }
     
-    public static void messegeConsol(String code, String userName, String email){
+    public static void consolMessege(String code, String userName, String email){
         
         String message = null;
         
