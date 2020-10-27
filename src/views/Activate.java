@@ -53,7 +53,7 @@ public class Activate extends javax.swing.JFrame {
         txtHelpUsername.setText(userName);
         txtHelpCode.setText(activationCode);
         
-        Helper.messegeConsol("vieOpn", this.getClass().toString());
+        Helper.consoleMessege("vieOpn", this.getClass().toString());
         
     }
 
@@ -240,7 +240,7 @@ public class Activate extends javax.swing.JFrame {
                     if( activated == true ){
                         
                         this.dispose();
-                        Helper.messegeConsol("vieCls", this.getClass().toString());
+                        Helper.userMessage("vieCls", this.getClass().toString());
                         
                         // Show wlcome view (The main view of the app)
                         Welcome welcome = new Welcome();
@@ -270,7 +270,7 @@ public class Activate extends javax.swing.JFrame {
             
             String newActivationCode = Helper.createCode(6);
             Helper.sendEmail(3, txtHelpUsername.getText(), txtHelpEmail.getText(), newActivationCode);
-            Helper.messageUser("1c", txtHelpUsername.getText(), txtHelpEmail.getText());
+            Helper.userMessage("1c", txtHelpUsername.getText(), txtHelpEmail.getText());
             this.dispose();
             
             Activate activate = new Activate(txtHelpUsername.getText(), txtHelpEmail.getText(), newActivationCode);
