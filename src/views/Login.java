@@ -34,7 +34,7 @@ public class Login extends javax.swing.JFrame {
         lblPassword.setForeground(Color.WHITE);
         
         Helper.consoleMessege("viwOpn", this.getClass().toString());
-        emptyLine();
+        printEmptyLine();
         
     }
 
@@ -187,7 +187,7 @@ public class Login extends javax.swing.JFrame {
                 if( activated == true ){
                     
                     Helper.consoleMessege("acoChkOk", txtUsername.getText());
-                    emptyLine();
+                    printEmptyLine();
                     Helper.consoleMessege("viwCls", this.getClass().toString());
                     this.dispose();
                     
@@ -206,13 +206,13 @@ public class Login extends javax.swing.JFrame {
                         String doctorEmail = Helper.uncrypt(Helper.getCode(), encryptedEmail);
                         
                         // Create a new activation code
-                        String activationCode = Helper.createCode(6);
+                        String activationCode = Helper.createCode();
                         
                         // Send the activation code to email
                         Helper.sendEmail(3, txtUsername.getText(), doctorEmail, activationCode);
                         
                         Helper.consoleMessege("sndActCde", txtUsername.getText(), doctorEmail);
-                        emptyLine();
+                        printEmptyLine();
                         Helper.userMessage("newCde", txtUsername.getText(), doctorEmail);
                         
                         Helper.consoleMessege("viwCls", this.getClass().toString());
@@ -231,14 +231,14 @@ public class Login extends javax.swing.JFrame {
             }else{
                 // If login fail
                 Helper.consoleMessege("logChkNo", txtUsername.getText());
-                emptyLine();
+                printEmptyLine();
                 Helper.userMessage("logNo");
             }
             
         }else{
             // If some filed is missing
             Helper.consoleMessege("FormNo");
-            emptyLine();
+            printEmptyLine();
             Helper.userMessage("FormNo");
             
         }
@@ -288,7 +288,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    private void emptyLine() {
+    private void printEmptyLine() {
         System.out.println("");
     }
     

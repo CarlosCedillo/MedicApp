@@ -34,7 +34,7 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class Helper {
     
-    public static String createCode(Integer length){
+    public static String createCode(){
         String securityKey;
         
         // Estos son los caracteres que se puden usar
@@ -44,7 +44,7 @@ public class Helper {
         Random random = new Random();
         
         // Aqui se genera la palabra de 10 caracteres
-        for( int i = 0 ; i < length ; i++ ){
+        for( int i = 0 ; i < 6 ; i++ ){
             
             char c = chars[random.nextInt(chars.length)];
             createdString.append(c);
