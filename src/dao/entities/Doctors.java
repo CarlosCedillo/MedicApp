@@ -1,13 +1,14 @@
+
 /* 
 TABLE doctors
     doctorUserName varchar(50)
     password varchar(50)
-    doctorEmail varchar(80
+    doctorEmail varchar(80)
+    usefulEmail boolean
     doctorName varchar(50)
     doctorLastName1 varchar(50)
     doctorLastName2 varchar(50)
     doctorSex varchar(1)
-    activated boolean
 */
 
 package dao.entities;
@@ -24,7 +25,7 @@ public class Doctors {
     private String lastName2;
     private String sex;
     private String email;
-    private boolean activated;
+    private boolean usefulEmail;
 
     public String getUserName() {
         return userName;
@@ -82,12 +83,12 @@ public class Doctors {
         this.email = email;
     }
 
-    public boolean isActivated() {
-        return activated;
+    public boolean isUsefulEmail() {
+        return usefulEmail;
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
+    public void setUsefulEmail(boolean usefulEmail) {
+        this.usefulEmail = usefulEmail;
     }
     
 }

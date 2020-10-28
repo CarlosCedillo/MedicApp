@@ -1,13 +1,14 @@
+
 /* 
 TABLE doctors
-    doctorUserName varchar(50)
-    password varchar(50)
-    doctorEmail varchar(80
-    doctorName varchar(50)
-    doctorLastName1 varchar(50)
-    doctorLastName2 varchar(50)
-    doctorSex varchar(1)
-    activated boolean
+    doctorUserName varchar(50)      1
+    password varchar(50)            2
+    doctorEmail varchar(80)         3
+    usefulEmail boolean             4
+    doctorName varchar(50)          5
+    doctorLastName1 varchar(50)     6
+    doctorLastName2 varchar(50)     7
+    doctorSex varchar(1)            8
 */
 
 package dao.impls;
@@ -35,18 +36,17 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
         try {
             
             Connection connection = dataBase.getConnection();
-            preparedStatement = connection.prepareStatement("INSERT INTO doctors (doctorUserName, password, doctorEmail, "
-//                                                                                      1             2           3                    
-                    + "doctorName, doctorLastName1, doctorLastName2, doctorSex, activated) VALUES (?,?,?,?,?,?,?,?)");
-//                          4             5                 6             7          8     
+            preparedStatement = connection.prepareStatement("INSERT INTO doctors (doctorUserName, password, "
+                    + "doctorEmail, usefulEmail, doctorName, doctorLastName1, doctorLastName2, doctorSex) "
+                    + "VALUES (?,?,?,?,?,?,?,?)");
             preparedStatement.setString (1, doctor.getUserName());
-            preparedStatement.setString (2, doctor.getPassword());
-            preparedStatement.setString (3, doctor.getEmail());
-            preparedStatement.setString (4, doctor.getName());
-            preparedStatement.setString (5, doctor.getLastName1());
-            preparedStatement.setString (6, doctor.getLastName2());
-            preparedStatement.setString (7, doctor.getSex());
-            preparedStatement.setBoolean(8, doctor.isActivated());
+            preparedStatement.setString(2, doctor.getPassword());
+            preparedStatement.setString(3, doctor.getEmail());
+            preparedStatement.setBoolean(4, doctor.isUsefulEmail());
+            preparedStatement.setString(5, doctor.getName());
+            preparedStatement.setString(6, doctor.getLastName1());
+            preparedStatement.setString(7, doctor.getLastName2());
+            preparedStatement.setString(8, doctor.getSex());
             Integer confirmation = preparedStatement.executeUpdate();
             
             if( confirmation == 1 ){
@@ -194,7 +194,7 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
     }
 
     @Override
-    public boolean getActivated(String userName) {
+    public boolean getUsefulEmail(String userName) {
         
         boolean activated = false;
         DataBase dataBase = new DataBase();
@@ -204,14 +204,14 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
         try {
             
             Connection connection = dataBase.getConnection();
-            preparedStatement = connection.prepareCall("SELECT activated FROM doctors WHERE doctorUserName = ?");
+            preparedStatement = connection.prepareCall("SELECT usefulEmail FROM doctors WHERE doctorUserName = ?");
             preparedStatement.setString(1, userName);
             resultSet = preparedStatement.executeQuery();
             
             while( resultSet.next() ){
                 Doctors doctors = new Doctors();
-                doctors.setActivated(resultSet.getBoolean("activated"));
-                activated = doctors.isActivated();
+                doctors.setUsefulEmail(resultSet.getBoolean("usefulEmail"));
+                activated = doctors.isUsefulEmail();
             }
             
             connection = dataBase.closeConnectio();
@@ -227,7 +227,7 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
     }
 
     @Override
-    public boolean activate(String userName) {
+    public boolean setUsefulEmail(String userName) {
         
         boolean activated = false;
         DataBase dataBase = new DataBase();
@@ -236,7 +236,7 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
         try {
             
             Connection connection = dataBase.getConnection();
-            preparedStatement = connection.prepareStatement("UPDATE doctors SET activated = ? WHERE doctorUserName = ?");
+            preparedStatement = connection.prepareStatement("UPDATE doctors SET usefulEmail = ? WHERE doctorUserName = ?");
             preparedStatement.setBoolean(1, true);
             preparedStatement.setString(2, userName);
             Integer check = preparedStatement.executeUpdate();
