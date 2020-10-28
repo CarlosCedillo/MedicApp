@@ -330,16 +330,6 @@ public class Helper {
                 type = JOptionPane.ERROR_MESSAGE;
             break;
             
-            case "actOK":
-                messageUser = "Cuenta de "+string+" activada correctamente";
-                type = JOptionPane.INFORMATION_MESSAGE;
-            break;
-            
-            case "actNo":
-                messageUser = "Cuenta de "+string+" no se activo";
-                type = JOptionPane.ERROR_MESSAGE;
-            break;
-            
         }
         
         JOptionPane.showMessageDialog(null, "<HTML><h2>"+messageUser+"</h2></HTML>", "Mensaje", type);
@@ -470,16 +460,16 @@ public class Helper {
                 message = "User "+string+": Getting email";
             break;
             
-            case "acoChk":
-                message = "Checking activated account: "+string;
+            case "usfChk":
+                message = "Checking usefullEmail: "+string;
             break;
             
-            case "acoChkOk":
-                message = "User "+string+" account: Activated";
+            case "usfChkOk":
+                message = "User "+string+" usefullEmail: Correct";
             break;
             
-            case "acoChkNo":
-                message = "User "+string+" account: Not activated";
+            case "usfChkNo":
+                message = "User "+string+" usefullEmail: Incorrect";
             break;
             
         }
