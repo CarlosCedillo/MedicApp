@@ -4,7 +4,7 @@ TABLE doctors
     doctorUserName varchar(50)      1
     password varchar(50)            2
     doctorEmail varchar(80)         3
-    usefulEmail boolean             4
+    confirmedEmail boolean          4
     doctorName varchar(50)          5
     doctorLastName1 varchar(50)     6
     doctorLastName2 varchar(50)     7
@@ -37,16 +37,16 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
             
             Connection connection = dataBase.getConnection();
             preparedStatement = connection.prepareStatement("INSERT INTO doctors (doctorUserName, password, "
-                    + "doctorEmail, usefulEmail, doctorName, doctorLastName1, doctorLastName2, doctorSex) "
+                    + "doctorEmail, confirmedEmail, doctorName, doctorLastName1, doctorLastName2, doctorSex) "
                     + "VALUES (?,?,?,?,?,?,?,?)");
             preparedStatement.setString (1, doctor.getUserName());
-            preparedStatement.setString(2, doctor.getPassword());
-            preparedStatement.setString(3, doctor.getEmail());
-            preparedStatement.setBoolean(4, doctor.isUsefulEmail());
-            preparedStatement.setString(5, doctor.getName());
-            preparedStatement.setString(6, doctor.getLastName1());
-            preparedStatement.setString(7, doctor.getLastName2());
-            preparedStatement.setString(8, doctor.getSex());
+            preparedStatement.setString (2, doctor.getPassword());
+            preparedStatement.setString (3, doctor.getEmail());
+            preparedStatement.setBoolean(4, doctor.isConfirmedEmail());
+            preparedStatement.setString (5, doctor.getName());
+            preparedStatement.setString (6, doctor.getLastName1());
+            preparedStatement.setString (7, doctor.getLastName2());
+            preparedStatement.setString (8, doctor.getSex());
             Integer confirmation = preparedStatement.executeUpdate();
             
             if( confirmation == 1 ){
@@ -194,7 +194,7 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
     }
 
     @Override
-    public boolean getUsefulEmail(String userName) {
+    public boolean getconfirmEmail(String userName) {
         
         boolean activated = false;
         DataBase dataBase = new DataBase();
@@ -204,14 +204,14 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
         try {
             
             Connection connection = dataBase.getConnection();
-            preparedStatement = connection.prepareCall("SELECT usefulEmail FROM doctors WHERE doctorUserName = ?");
+            preparedStatement = connection.prepareCall("SELECT confirmedEmail FROM doctors WHERE doctorUserName = ?");
             preparedStatement.setString(1, userName);
             resultSet = preparedStatement.executeQuery();
             
             while( resultSet.next() ){
                 Doctors doctors = new Doctors();
-                doctors.setUsefulEmail(resultSet.getBoolean("usefulEmail"));
-                activated = doctors.isUsefulEmail();
+                doctors.setConfirmedEmail(resultSet.getBoolean("confirmedEmail"));
+                activated = doctors.isConfirmedEmail();
             }
             
             connection = dataBase.closeConnectio();
@@ -227,7 +227,7 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
     }
 
     @Override
-    public boolean setUsefulEmail(String userName) {
+    public boolean setconfirmEmail(String userName) {
         
         boolean activated = false;
         DataBase dataBase = new DataBase();
@@ -236,7 +236,7 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
         try {
             
             Connection connection = dataBase.getConnection();
-            preparedStatement = connection.prepareStatement("UPDATE doctors SET usefulEmail = ? WHERE doctorUserName = ?");
+            preparedStatement = connection.prepareStatement("UPDATE doctors SET confirmedEmail = ? WHERE doctorUserName = ?");
             preparedStatement.setBoolean(1, true);
             preparedStatement.setString(2, userName);
             Integer check = preparedStatement.executeUpdate();

@@ -4,7 +4,7 @@ TABLE doctors
     doctorUserName varchar(50)      1
     password varchar(50)            2
     doctorEmail varchar(80)         3
-    usefulEmail boolean             4
+    confirmedEmail boolean          4
     doctorName varchar(50)          5
     doctorLastName1 varchar(50)     6
     doctorLastName2 varchar(50)     7
@@ -357,7 +357,7 @@ public class Singup extends javax.swing.JFrame {
                         doctor.setUserName(txtUsername.getText());              //1
                         doctor.setPassword(encryptedPassword);                  //2
                         doctor.setEmail(encryptedEmail);                        //3
-                        doctor.setUsefulEmail(false);                           //4
+                        doctor.setConfirmedEmail(false);                        //4
                         doctor.setName(txtName.getText());                      //5
                         doctor.setLastName1(txtLastname1.getText());            //6
                         doctor.setLastName2(txtLastname2.getText());            //7

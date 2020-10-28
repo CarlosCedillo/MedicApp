@@ -33,11 +33,11 @@ public class DataBase {
                         + "doctorUserName varchar(50), "
                         + "password varchar(50), "
                         + "doctorEmail varchar(80), "
+                        + "confirmedEmail boolean, "
                         + "doctorName varchar(50), "
                         + "doctorLastName1 varchar(50), "
                         + "doctorLastName2 varchar(50), "
-                        + "doctorSex varchar(1), "
-                        + "activated boolean)";
+                        + "doctorSex varchar(1) )";
                 
                 try {
                     

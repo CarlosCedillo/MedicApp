@@ -184,7 +184,7 @@ public class Login extends javax.swing.JFrame {
                 Helper.consoleMessege("logChkOk", txtUsername.getText());
                 // 3.- Check usefullEmail
                 Helper.consoleMessege("usfChk", txtUsername.getText());
-                boolean activated = doctorDaoImpl.getUsefulEmail(txtUsername.getText());
+                boolean activated = doctorDaoImpl.getconfirmEmail(txtUsername.getText());
                 if( activated == true ){
                     
                     Helper.consoleMessege("usfChkOk", txtUsername.getText());

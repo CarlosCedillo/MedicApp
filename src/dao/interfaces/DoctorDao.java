@@ -4,7 +4,7 @@ TABLE doctors
     doctorUserName varchar(50)
     password varchar(50)
     doctorEmail varchar(80)
-    usefulEmail boolean
+    confirmedEmail boolean
     doctorName varchar(50)
     doctorLastName1 varchar(50)
     doctorLastName2 varchar(50)
@@ -32,9 +32,9 @@ public interface DoctorDao {
     
     public boolean existEmail(String doctorEmail);
     
-    public boolean getUsefulEmail(String userName);
+    public boolean getconfirmEmail(String userName);
     
-    public boolean setUsefulEmail(String userName);
+    public boolean setconfirmEmail(String userName);
     
     public String getEmail(String userName);
     

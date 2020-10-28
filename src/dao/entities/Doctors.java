@@ -4,7 +4,7 @@ TABLE doctors
     doctorUserName varchar(50)
     password varchar(50)
     doctorEmail varchar(80)
-    usefulEmail boolean
+    confirmedEmail boolean
     doctorName varchar(50)
     doctorLastName1 varchar(50)
     doctorLastName2 varchar(50)
@@ -25,7 +25,7 @@ public class Doctors {
     private String lastName2;
     private String sex;
     private String email;
-    private boolean usefulEmail;
+    private boolean confirmedEmail;
 
     public String getUserName() {
         return userName;
@@ -83,12 +83,12 @@ public class Doctors {
         this.email = email;
     }
 
-    public boolean isUsefulEmail() {
-        return usefulEmail;
+    public boolean isConfirmedEmail() {
+        return confirmedEmail;
     }
 
-    public void setUsefulEmail(boolean usefulEmail) {
-        this.usefulEmail = usefulEmail;
+    public void setConfirmedEmail(boolean confirmedEmail) {
+        this.confirmedEmail = confirmedEmail;
     }
     
 }
