@@ -25,7 +25,8 @@ public class Login extends javax.swing.JFrame {
         setIconImage(image);
         
         ImageIcon logo = new ImageIcon(getClass().getResource("/images/MedicApp_Logo_1.png"));
-        Icon showLogo = new ImageIcon(logo.getImage().getScaledInstance(lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_DEFAULT));
+        Icon showLogo = new ImageIcon(logo.getImage().getScaledInstance
+            (lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_DEFAULT));
         lblLogo.setIcon(showLogo);
         
         this.setLocationRelativeTo(null);
@@ -181,12 +182,12 @@ public class Login extends javax.swing.JFrame {
             if( loggedin == true ){
                 
                 Helper.consoleMessege("logChkOk", txtUsername.getText());
-                // 3.- Check if the account is activate
-                Helper.consoleMessege("acoChk", txtUsername.getText());
-                boolean activated = doctorDaoImpl.getActivated(txtUsername.getText());
+                // 3.- Check usefullEmail
+                Helper.consoleMessege("usfChk", txtUsername.getText());
+                boolean activated = doctorDaoImpl.getUsefulEmail(txtUsername.getText());
                 if( activated == true ){
                     
-                    Helper.consoleMessege("acoChkOk", txtUsername.getText());
+                    Helper.consoleMessege("usfChkOk", txtUsername.getText());
                     printEmptyLine();
                     Helper.consoleMessege("viwCls", this.getClass().toString());
                     this.dispose();
@@ -196,7 +197,7 @@ public class Login extends javax.swing.JFrame {
                     
                 }else{
                     
-                    Helper.consoleMessege("acoChkNo", txtUsername.getText());
+                    Helper.consoleMessege("usfChkNo", txtUsername.getText());
                     
                     try {
                         
@@ -219,7 +220,7 @@ public class Login extends javax.swing.JFrame {
                         this.dispose();
                         
                         // Show activate view
-                        Activate activate = new Activate(txtUsername.getText(), doctorEmail, activationCode);
+                        ConfirmEmail activate = new ConfirmEmail(txtUsername.getText(), doctorEmail, activationCode);
                         activate.setVisible(true);
                         
                     } catch (MessagingException | IOException ex) {
