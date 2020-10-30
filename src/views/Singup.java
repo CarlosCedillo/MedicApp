@@ -376,7 +376,7 @@ public class Singup extends javax.swing.JFrame {
                                 String activationCode = Helper.createCode();
                                 Helper.consoleMessege("sndActCde", txtUsername.getText(), txtEmail.getText());
                                 Helper.sendEmail(1, txtUsername.getText(), txtEmail.getText(), activationCode);
-                                Helper.userMessage("sndActCde", txtUsername.getText(), txtEmail.getText());
+                                Helper.userMessage("usrCrtOk", txtUsername.getText(), txtEmail.getText());
                                 this.dispose();
                                 Helper.consoleMessege("viwCls", this.getClass().toString());
                             
