@@ -212,7 +212,7 @@ public class Login extends javax.swing.JFrame {
                         // Send the activation code to email
                         Helper.sendEmail(3, txtUsername.getText(), doctorEmail, activationCode);
                         
-                        Helper.consoleMessege("sndActCde", txtUsername.getText(), doctorEmail);
+                        Helper.consoleMessege("sndCnfCde", txtUsername.getText(), doctorEmail);
                         printEmptyLine();
                         Helper.userMessage("newCde", txtUsername.getText(), doctorEmail);
                         
@@ -237,7 +237,7 @@ public class Login extends javax.swing.JFrame {
             }
             
         }else{
-            // If some filed is missing
+            // If some field is missing
             Helper.consoleMessege("FormNo");
             printEmptyLine();
             Helper.userMessage("FormNo");
