@@ -32,9 +32,9 @@ public interface DoctorDao {
     
     public boolean existEmail(String doctorEmail);
     
-    public boolean getconfirmEmail(String userName);
+    public boolean getconfirmedEmail(String userName);
     
-    public boolean setconfirmEmail(String userName);
+    public boolean setconfirmedEmail(String userName);
     
     public String getEmail(String userName);
     

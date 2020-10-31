@@ -194,7 +194,7 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
     }
 
     @Override
-    public boolean getconfirmEmail(String userName) {
+    public boolean getconfirmedEmail(String userName) {
         
         boolean activated = false;
         DataBase dataBase = new DataBase();
@@ -227,7 +227,7 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao{
     }
 
     @Override
-    public boolean setconfirmEmail(String userName) {
+    public boolean setconfirmedEmail(String userName) {
         
         boolean activated = false;
         DataBase dataBase = new DataBase();
