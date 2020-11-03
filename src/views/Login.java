@@ -34,7 +34,7 @@ public class Login extends javax.swing.JFrame {
         lblUsername.setForeground(Color.WHITE);
         lblPassword.setForeground(Color.WHITE);
         
-        Helper.consoleMessege("viwOpn", this.getClass().toString());
+        Helper.consoleMessage("opnView", this.getClass().toString());
         printEmptyLine();
         
     }
@@ -160,7 +160,7 @@ public class Login extends javax.swing.JFrame {
 
     private void btnSingupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSingupActionPerformed
         
-        Helper.consoleMessege("viwCls", this.getClass().toString());
+        Helper.consoleMessage("clsView", this.getClass().toString());
         Singup singup = new Singup();
         this.dispose();
         singup.setVisible(true);
@@ -170,85 +170,97 @@ public class Login extends javax.swing.JFrame {
     @SuppressWarnings("deprecation")
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         
-        // 1.- Check all fields are filled
+        // Check all fields are filled
         if( txtUsername.getText().isEmpty() == false && txtPassword.getText().isEmpty() == false ){
             
             DoctorDaoImpl doctorDaoImpl = new DoctorDaoImpl();
             
-            // 2.- Check login
-            String encryptedPassword = Helper.encrypt(Helper.getCode(), txtPassword.getText());
-            Helper.consoleMessege("logChk", txtUsername.getText());
-            boolean loggedin = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
-            if( loggedin == true ){
+            // Check that user exist in Db
+            Helper.consoleMessage("usrSch", txtUsername.getText());
+            boolean userExist = doctorDaoImpl.existUsername(txtUsername.getText());
+            if( userExist == true ){
                 
-                Helper.consoleMessege("logChkOk", txtUsername.getText());
-                // 3.- Check usefullEmail
-                Helper.consoleMessege("usfChk", txtUsername.getText());
-                boolean activated = doctorDaoImpl.getconfirmEmail(txtUsername.getText());
-                if( activated == true ){
-                    
-                    Helper.consoleMessege("usfChkOk", txtUsername.getText());
-                    printEmptyLine();
-                    Helper.consoleMessege("viwCls", this.getClass().toString());
-                    this.dispose();
-                    
-                    Welcome welcome = new Welcome();
-                    welcome.setVisible(true);
-                    
-                }else{
-                    
-                    Helper.consoleMessege("usfChkNo", txtUsername.getText());
-                    
-                    try {
-                        
-                        // Get email (encrypted and unencrypt) of username
-                        Helper.consoleMessege("getEmail", txtUsername.getText());
-                        String encryptedEmail = doctorDaoImpl.getEmail(txtUsername.getText());
-                        String doctorEmail = Helper.uncrypt(Helper.getCode(), encryptedEmail);
-                        
-                        // Create a new activation code
-                        String activationCode = Helper.createCode();
-                        
-                        // Send the activation code to email
-                        Helper.sendEmail(3, txtUsername.getText(), doctorEmail, activationCode);
-                        
-                        Helper.consoleMessege("sndCnfCde", txtUsername.getText(), doctorEmail);
+                Helper.consoleMessage("usrSchOk", txtUsername.getText());
+            
+                // Check login
+                String encryptedPassword = Helper.encrypt(txtPassword.getText());
+                Helper.consoleMessage("lgnChk", txtUsername.getText());
+                boolean loggedin = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
+                if( loggedin == true ){
+
+                    Helper.consoleMessage("lgnChkOk", txtUsername.getText());
+
+                    // Check confirmed Email
+                    Helper.consoleMessage("cnfChk", txtUsername.getText());
+                    boolean activated = doctorDaoImpl.getconfirmedEmail(txtUsername.getText());
+                    if( activated == true ){
+
+                        Helper.consoleMessage("cnfChkOk", txtUsername.getText());
                         printEmptyLine();
-                        Helper.userMessage("newCde", txtUsername.getText(), doctorEmail);
-                        
-                        Helper.consoleMessege("viwCls", this.getClass().toString());
+                        Helper.consoleMessage("clsView", this.getClass().toString());
                         this.dispose();
-                        
-                        // Show activate view
-                        ConfirmEmail activate = new ConfirmEmail(txtUsername.getText(), doctorEmail, activationCode);
-                        activate.setVisible(true);
-                        
-                    } catch (MessagingException | IOException ex) {
-                        System.out.println(ex.getMessage());
+
+                        Welcome welcome = new Welcome();
+                        welcome.setVisible(true);
+
+                    }else{
+
+                        Helper.consoleMessage("cnfChkNo", txtUsername.getText());
+
+                        try {
+
+                            // Get email (encrypted and unencrypt) of username
+                            Helper.consoleMessage("getEml", txtUsername.getText());
+                            String encryptedEmail = doctorDaoImpl.getEmail(txtUsername.getText());
+                            String doctorEmail = Helper.uncrypt(encryptedEmail);
+
+                            // Create a new code
+                            String confirmationCode = Helper.createCode();
+
+                            // Send the confirmation code to email
+                            Helper.consoleMessage("sndCde", txtUsername.getText(), doctorEmail);
+                            Helper.userMessage("sndCde", txtUsername.getText(), doctorEmail);
+                            Helper.sendEmail(3, txtUsername.getText(), doctorEmail, confirmationCode);
+                            printEmptyLine();
+                            Helper.consoleMessage("clsView", this.getClass().toString());
+                            this.dispose();
+
+                            // Show activate view
+                            ConfirmEmail activate = new ConfirmEmail(txtUsername.getText(), doctorEmail, confirmationCode);
+                            activate.setVisible(true);
+
+                        } catch (MessagingException | IOException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+
                     }
-                    
+
+                }else{
+                    // If login fail
+                    Helper.consoleMessage("lgnChkNo", txtUsername.getText());
+                    printEmptyLine();
+                    Helper.userMessage("usrLogNo");
                 }
                 
             }else{
-                // If login fail
-                Helper.consoleMessege("logChkNo", txtUsername.getText());
+                // If the user dont exist in DB
+                Helper.consoleMessage("usrSchNo", txtUsername.getText());
                 printEmptyLine();
-                Helper.userMessage("logNo");
+                Helper.userMessage("usrNtf");
             }
             
         }else{
             // If some field is missing
-            Helper.consoleMessege("FormNo");
+            Helper.consoleMessage("mssFld");
             printEmptyLine();
-            Helper.userMessage("FormNo");
-            
+            Helper.userMessage("frmNo");
         }
         
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnForgotPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForgotPasswordActionPerformed
         
-        Helper.consoleMessege("viwCls", this.getClass().toString());
+        Helper.consoleMessage("clsView", this.getClass().toString());
         ForgotPassword forgotPassword = new ForgotPassword();
         forgotPassword.setVisible(true);
         this.dispose();
