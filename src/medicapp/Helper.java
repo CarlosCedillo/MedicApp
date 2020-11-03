@@ -56,7 +56,7 @@ public class Helper {
         return securityKey;
     }
     
-    public static String encrypt(String code, String text) {
+    public static String encrypt(String text) {
         
         String textEncrypted = null;
         
@@ -64,7 +64,7 @@ public class Helper {
             
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             
-            byte[] llavePassword = md5.digest(code.getBytes("utf-8"));
+            byte[] llavePassword = md5.digest(Helper.getCode().getBytes("utf-8"));
             byte[] BytesKey = Arrays.copyOf(llavePassword, 24);
             
             SecretKey key = new SecretKeySpec(BytesKey, "DESede");
@@ -84,14 +84,14 @@ public class Helper {
         return textEncrypted;
     }
     
-    public static String uncrypt(String code, String text){
+    public static String uncrypt(String text){
         
         String textUnencrypted = null;
         
         try {
             byte[] message = Base64.decodeBase64(text.getBytes("utf-8"));
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] digestOfPassword = md5.digest(code.getBytes("utf-8"));
+            byte[] digestOfPassword = md5.digest(Helper.getCode().getBytes("utf-8"));
             byte[] keyBytes = Arrays.copyOf(digestOfPassword, 24);
             SecretKey key = new SecretKeySpec(keyBytes, "DESede");
             Cipher decipher = Cipher.getInstance("DESede");
@@ -140,24 +140,24 @@ public class Helper {
             case 1:
                 subject = "Bienvenido a MedicApp";
                 content = "Hola "+userName+"\n\n"
-                        + "Este correo es para notificarle su dada de alta a la aplicación MedicApp, como último "
-                        + "paso, por favor ingrese el siguiente código cuando se le pida para activar su cuenta: "
+                        + "Este correo es para notificarle que se ha dado de alta en la aplicación MedicApp, para \n"
+                        + "finalizar el proceso ingrese el siguiente código cuando se le solicite:"
                         + "\n\n"+activationCode;
             break;
             
             case 2:
                 subject = "Cambio de correo";
                 content = "Hola "+userName+"\n\n"
-                        + "Recientemente ha cambiado de correo electrónico, ahora este correo va a estar asociado a su "
-                        + "cuenta medicApp, por favor ingrese el siguiente código en la aplicación para finalizar el proceso:"
+                        + "Este correo es para notificarle que recientemente a solicitado un cambio de correo, para \n"
+                        + "terminar la acción, ingrese el siguiente código y el nuevo correo en la ventana de la aplicación:"
                         + "\n\n"+activationCode;
             break;
             
             case 3:
-                subject = "Nuevo código de activacion";
+                subject = "Nuevo código";
                 content = "Hola "+userName+"\n\n"
-                        + "Recientemente ha solicitado un nuevo código de activación para su cuenta MedicApp, favor de "
-                        + "ingresarla en la aplicación para terminar este proceso:"
+                        + "Este correo es para proporcionarle un nuevo código de confirmación a su cuenta \n"
+                        + " MedicApp, por favor ingrésela cuando se le solicite:"
                         + "\n\n"+activationCode;
             break;
         
@@ -241,7 +241,7 @@ public class Helper {
         
     }
     
-    public static String getCode(){
+    private static String getCode(){
         
         String content = "", code = null;
         
@@ -272,226 +272,242 @@ public class Helper {
     
     public static void userMessage(String code){
         
-        String messageUser = null;
+        String userMessage = null;
         Integer type = null;
     
         switch( code ){
             
-            case "FormNo":
-                messageUser = "Formulario Incompleto";
+            // Form incomplete
+            
+            case "frmNo":
+                userMessage = "Formulario incompleto";
                 type = JOptionPane.INFORMATION_MESSAGE;
             break;
             
-            case "pssNM":
-                messageUser = "Las contraseñas no son iguales";
+            // User not founf
+            
+            case "usrNtf":
+                userMessage = "El usuario no existe";
                 type = JOptionPane.INFORMATION_MESSAGE;
             break;
             
-            case "logNo":
-                messageUser = "Usuario o contraseña incorrecto";
-                type = JOptionPane.ERROR_MESSAGE;
+            // Login fail
+            
+            case "usrLogNo":
+                userMessage = "Contraseña incorrecta";
+                type = JOptionPane.INFORMATION_MESSAGE;
             break;
             
-            case "acdNo":
-                messageUser = "Código de activación incorrecto";
-                type = JOptionPane.ERROR_MESSAGE;
-            break;
+            // Default
             
-            case "mdfEmailNo":
-                messageUser = "No se modifico el correo";
-                type = JOptionPane.ERROR_MESSAGE;
+            default: 
+                userMessage = "Código no asignado";
+                type = JOptionPane.WARNING_MESSAGE;
             break;
             
         }
         
-        JOptionPane.showMessageDialog(null, "<HTML><h2>"+messageUser+"</h2></HTML>", "Mensaje", type);
+        JOptionPane.showMessageDialog(null, "<HTML><h2>"+userMessage+"</h2></HTML>", "Mensaje", type);
     
     }
     
     public static void userMessage(String code, String string){
         
-        String messageUser = null;
+        String userMessage = null;
         Integer type = null;
     
         switch( code ){
             
-            case "usrOk":
-                messageUser = "El usuario "+string+" ya esta registrado";
-                type = JOptionPane.INFORMATION_MESSAGE;
-            break;
+            // Default
             
-            case "emlOk":
-                messageUser = "El correo "+string+" ya esta registrado";
-                type = JOptionPane.INFORMATION_MESSAGE;
-            break;
-            
-            case "usrNo":
-                messageUser = "El usuario "+string+" no se guardo";
-                type = JOptionPane.ERROR_MESSAGE;
+            default: 
+                userMessage = "Código no asignado";
+                type = JOptionPane.WARNING_MESSAGE;
             break;
             
         }
         
-        JOptionPane.showMessageDialog(null, "<HTML><h2>"+messageUser+"</h2></HTML>", "Mensaje", type);
+        JOptionPane.showMessageDialog(null, "<HTML><h2>"+userMessage+"</h2></HTML>", "Mensaje", type);
     
     }
     
-    public static void userMessage(String code, String userName, String email){
+    public static void userMessage(String code, String username, String email){
         
-        String messageUser = null;
+        String userMessage = null;
         Integer type = null;
     
         switch( code ){
             
-            case "ctrUsrOk":
-                messageUser = "Usuario "+userName+" creado exitosamente, correo enviado a "+email;
+            // Send code to email
+            
+            case "sndCde":
+                userMessage = "Código de confirmación de "+username+" mandado a <br>"+email;
                 type = JOptionPane.INFORMATION_MESSAGE;
             break;
             
-            case "mdfEml":
-                messageUser = "Correo de "+userName+" cambiado a "+email;
-                type = JOptionPane.INFORMATION_MESSAGE;
-            break;
+            // Default
             
-            case "newCde":
-                messageUser = "Código de activacion de "+userName+" enviado a "+email ;
-                type = JOptionPane.INFORMATION_MESSAGE;
+            default: 
+                userMessage = "Código no asignado";
+                type = JOptionPane.WARNING_MESSAGE;
             break;
             
         }
         
-        JOptionPane.showMessageDialog(null, "<HTML><h2>"+messageUser+"</h2></HTML>", "Mensaje", type);
+        JOptionPane.showMessageDialog(null, "<HTML><h2>"+userMessage+"</h2></HTML>", "Mensaje", type);
     
     }
     
-    //  Here on are the messages to console
+    public static void consoleMessage(String code){
     
-    public static void consoleMessege(String code){
-        
-        String message = null;
+        String consoleMessage = null;
         
         switch( code ){
             
-            case "FormNo":
-                message = "Form incomplete";
+            case "mssFld":
+                consoleMessage = "Form incomplete";
             break;
             
-            case "pssNM":
-                message = "Passwords not match";
+            case "pssNtm":
+                consoleMessage = "Paswords not match";
+            break;
+            
+            // Default
+            
+            default:
+                consoleMessage = "Message not setted";
             break;
             
         }
         
-        System.out.println( message );
-        
+        System.out.println(consoleMessage);
+    
     }
     
-    public static void consoleMessege(String code, String string){
-        
-        String message = null;
+    public static void consoleMessage(String code, String string){
+    
+        String consoleMessage = null;
         
         switch( code ){
             
-            // Views
+            // Common to all views
             
-            case "viwOpn":
-                message = "---- Now is visible: "+string+" ----";
+            case "opnView":
+                consoleMessage = "---- Opening "+string+" ----";
             break;
             
-            case "viwCls":
-                message = "---- Now is closing: "+string+" ----";
+            case "clsView":
+                consoleMessage = "---- Cloing "+string+" ----";
             break;
             
             // Login
             
-            case "logChk":
-                message = "Cheking login: "+string;
+            case "lgnChk":
+                consoleMessage = "Checking login: "+string;
             break;
             
-            case "logChkOk":
-                message = "User "+string+" login: Success";
+            case "lgnChkOk":
+                consoleMessage = "User "+string+": Login successfully";
             break;
             
-            case "logChkNo":
-                message = "User "+string+" login: failed";
+            case "lgnChkNo":
+                consoleMessage = "User "+string+": Login failed";
             break;
             
-            // Singup
+            // Confirmed email
             
-            case "usrChk":
-                message = "Searching user: "+string;
-            break;
-    
-            case "usrChkYs":
-                message = "User "+string+": Founded";
+            case "cnfChk":
+                consoleMessage = "Checkink confirmed email: "+string;
             break;
             
-            case "usrChkNo":
-                message = "User "+string+": Not founded";
+            case "cnfChkOk":
+                consoleMessage = "User "+string+": Email confirmed";
             break;
             
-            case "emlChk":
-                message = "Searching email: "+string;
+            case "cnfChkNo":
+                consoleMessage = "User "+string+": Email not confirmed";
             break;
             
-            case "emlChkYs":
-                message = "Email "+string+": Found";
+            // Search user in DB
+            
+            case "usrSch":
+                consoleMessage = "Searching user: "+string;
             break;
             
-            case "emlChkNo":
-                message = "Email "+string+": Not found";
+            case "usrSchOk":
+                consoleMessage = "User "+string+": Found";
             break;
+            
+            case "usrSchNo":
+                consoleMessage = "User "+string+": Not found";
+            break;
+            
+            // Search user in DB
+            
+            case "emlSch":
+                consoleMessage = "Searching email: "+string;
+            break;
+            
+            case "emlSchOk":
+                consoleMessage = "Email "+string+": Found";
+            break;
+            
+            case "emlSchNo":
+                consoleMessage = "Email "+string+": Not found";
+            break;
+            
+            // Get email
+            
+            case "getEml":
+                consoleMessage = "User "+string+": Getting email";
+            break;
+            
+            // Create user
             
             case "usrCrt":
-                message = "Creating user: "+string;
+                consoleMessage = "Creating user: "+string;
             break;
             
             case "usrCrtOk":
-                message = "User "+string+": Created successfully";
+                consoleMessage = "User "+string+": Created successfully";
             break;
             
             case "usrCrtNo":
-                message = "User "+string+": Not created";
+                consoleMessage = "User "+string+": Not created";
             break;
             
-            // Activate
+            // Default
             
-            case "getEmail":
-                message = "User "+string+": Getting email";
-            break;
-            
-            case "usfChk":
-                message = "Checking usefullEmail: "+string;
-            break;
-            
-            case "usfChkOk":
-                message = "User "+string+" usefullEmail: Correct";
-            break;
-            
-            case "usfChkNo":
-                message = "User "+string+" usefullEmail: Incorrect";
+            default:
+                consoleMessage = "Message not setted";
             break;
             
         }
         
-        System.out.println( message );
-        
+        System.out.println(consoleMessage);
+    
     }
     
-    public static void consoleMessege(String code, String userName, String email){
-        
-        String message = null;
+    public static void consoleMessage(String code, String username, String email){
+    
+        String consoleMessage = null;
         
         switch( code ){
             
-            case "sndActCde":
-                message = "User "+userName+": sending activation code to "+email+"";
+            case "sndCde":
+                consoleMessage = "Sending "+username+" confirmation code to "+email;
+            break;
+            
+            // Default
+            
+            default:
+                consoleMessage = "Message not setted";
             break;
             
         }
         
-        System.out.println( message );
+        System.out.println(consoleMessage);
         
     }
-
+    
 }
