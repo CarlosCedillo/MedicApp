@@ -376,9 +376,9 @@ public class Singup extends javax.swing.JFrame {
                                 String confirmationCode = Helper.createCode();
                                 
                                 // Send the confirmation code to email
-                                Helper.consoleMessage("sndCde", doctor.getUserName(), txtEmail.getText());
+                                Helper.consoleMessage("usrCrtOk", doctor.getUserName(), txtEmail.getText());
                                 printEmptyLine();
-                                Helper.userMessage("sngpOk", txtUsername.getText(), txtEmail.getText());
+                                Helper.userMessage("usrCrtOk", txtUsername.getText(), txtEmail.getText());
                                 
                                 Helper.sendEmail(1, txtUsername.getText(), txtEmail.getText(), confirmationCode);
                                 
