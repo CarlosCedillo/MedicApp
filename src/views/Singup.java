@@ -45,7 +45,7 @@ public class Singup extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         
-        Helper.consoleMessege("viwOpn", this.getClass().toString());
+        Helper.consoleMessage("opnView", this.getClass().toString());
         printEmptyLine();
         
     }
@@ -205,7 +205,7 @@ public class Singup extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlAccount2Layout.createSequentialGroup()
                         .addComponent(rbtnMale)
                         .addGap(12, 12, 12)
-                        .addComponent(rbtnFemale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(rbtnFemale, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
                     .addComponent(txtLastname1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtLastname2))
                 .addGap(15, 15, 15))
@@ -230,7 +230,7 @@ public class Singup extends javax.swing.JFrame {
                     .addComponent(lblEmail5)
                     .addComponent(rbtnMale)
                     .addComponent(rbtnFemale))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnGoBack.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -274,11 +274,11 @@ public class Singup extends javax.swing.JFrame {
                 .addComponent(pnlAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlAccount2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addGap(5, 5, 5)
                 .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSingup)
                     .addComponent(btnGoBack))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -286,20 +286,20 @@ public class Singup extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(166, Short.MAX_VALUE)
-                .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 154, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(138, 138, 138)
+                .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -309,7 +309,7 @@ public class Singup extends javax.swing.JFrame {
 
     private void btnGoBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoBackActionPerformed
 
-        Helper.consoleMessege("viwCls", this.getClass().toString());
+        Helper.consoleMessage("clsView", this.getClass().toString());
         Login login = new Login();
         login.setVisible(true);
         this.dispose();
@@ -332,22 +332,22 @@ public class Singup extends javax.swing.JFrame {
                 DoctorDaoImpl doctorDaoImpl = new DoctorDaoImpl();
                 
                 // 2.- Check if username is on the DB
-                Helper.consoleMessege("usrChk", txtUsername.getText());
+                Helper.consoleMessage("usrSch", txtUsername.getText());
                 boolean checkUsername = doctorDaoImpl.existUsername(txtUsername.getText());
                 if (checkUsername == false) {
                     
-                    Helper.consoleMessege("usrChkNo", txtUsername.getText());
+                    Helper.consoleMessage("usrSchNo", txtUsername.getText());
                     
                     // 3.- Check if email is on the DB (encrypted)
-                    String encryptedEmail = Helper.encrypt(Helper.getCode(), txtEmail.getText());
-                    Helper.consoleMessege("emlChk", txtEmail.getText());
+                    Helper.consoleMessage("emlSch", txtEmail.getText());
+                    String encryptedEmail = Helper.encrypt(txtEmail.getText());
                     boolean checkEmail = doctorDaoImpl.existEmail(encryptedEmail);
                     if (checkEmail == false) {
-
-                        Helper.consoleMessege("emlChkNo", txtEmail.getText());
                         
+                        Helper.consoleMessage("emlSchNo", txtEmail.getText());
+
                         // 4.1.- Create a new Doctor in DB
-                        String encryptedPassword = Helper.encrypt(Helper.getCode(), txtPassword1.getText());
+                        String encryptedPassword = Helper.encrypt(txtPassword1.getText());
                         String doctorSex = null;
                         
                         if( rbtnFemale.isSelected() == true ){doctorSex = "M";}
@@ -363,26 +363,31 @@ public class Singup extends javax.swing.JFrame {
                         doctor.setLastName2(txtLastname2.getText());            //7
                         doctor.setSex(doctorSex);                               //8
                         
-                        Helper.consoleMessege("usrCrt", txtUsername.getText());
+                        Helper.consoleMessage("usrCrt", doctor.getUserName());
                         boolean created = doctorDaoImpl.create(doctor);
                         
                         if( created == true ){
                             
-                            Helper.consoleMessege("usrCrtOk", txtUsername.getText());
+                            Helper.consoleMessage("usrCrtOk", txtUsername.getText());
                             
                             try {
                                 
-                                // Send email: New user
-                                String activationCode = Helper.createCode();
-                                Helper.consoleMessege("sndActCde", txtUsername.getText(), txtEmail.getText());
-                                Helper.sendEmail(1, txtUsername.getText(), txtEmail.getText(), activationCode);
-                                Helper.userMessage("usrCrtOk", txtUsername.getText(), txtEmail.getText());
+                                // Create new code
+                                String confirmationCode = Helper.createCode();
+                                
+                                // Send the confirmation code to email
+                                Helper.consoleMessage("sndCde", doctor.getUserName(), txtEmail.getText());
+                                printEmptyLine();
+                                Helper.userMessage("sngpOk", txtUsername.getText(), txtEmail.getText());
+                                
+                                Helper.sendEmail(1, txtUsername.getText(), txtEmail.getText(), confirmationCode);
+                                
+                                Helper.consoleMessage("clsView", this.getClass().toString());
                                 this.dispose();
-                                Helper.consoleMessege("viwCls", this.getClass().toString());
                             
                                 // 4.2.- Show confirm Email view to confirm it XD
                                 ConfirmEmail confirmEmail = new 
-                                    ConfirmEmail(txtUsername.getText(), txtEmail.getText(), activationCode);
+                                    ConfirmEmail(txtUsername.getText(), txtEmail.getText(), confirmationCode);
                                 confirmEmail.setVisible(true);
 
                             } catch (MessagingException | IOException ex) {
@@ -391,40 +396,37 @@ public class Singup extends javax.swing.JFrame {
                             
                         }else{
                             // If the doctor was not crate
-                            Helper.consoleMessege("usrCrtNo", txtUsername.getText());
+                            Helper.consoleMessage("usrCrtNo", doctor.getUserName());
                             printEmptyLine();
-                            Helper.userMessage("usrNo", txtUsername.getText());
-                            
+                            Helper.userMessage("usrCrtNo", doctor.getUserName());
                         }
 
                     } else {
                         // If the email exist in DB
-                        Helper.consoleMessege("emlChkYs", txtEmail.getText());
+                        Helper.consoleMessage("emlSchOk", txtEmail.getText());
                         printEmptyLine();
-                        Helper.userMessage("emlOk", txtEmail.getText());
+                        Helper.userMessage("emlSchOk", txtEmail.getText());
                     }
 
                 } else {
                     // If the username exist in DB
-                    Helper.consoleMessege("usrChkYs", txtUsername.getText());
+                    Helper.consoleMessage("usrSchOk", txtUsername.getText());
                     printEmptyLine();
-                    Helper.userMessage("usrOk", txtUsername.getText());
-                    
+                    Helper.userMessage("usrSchOk", txtUsername.getText());
                 }
 
             } else {
                 // If passwords does not match
-                Helper.consoleMessege("pssNM");
+                Helper.consoleMessage("pssNtm");
                 printEmptyLine();
-                Helper.userMessage("pssNM");
+                Helper.userMessage("pssNm");
             }
 
         } else {
             // If some field is missing
-            Helper.consoleMessege("FormNo");
+            Helper.consoleMessage("mssFld");
             printEmptyLine();
-            Helper.userMessage("FormNo");
-            
+            Helper.userMessage("frmNo");
         }
 
     }//GEN-LAST:event_btnSingupActionPerformed
