@@ -376,18 +376,18 @@ public class Singup extends javax.swing.JFrame {
                                 String confirmationCode = Helper.createCode();
                                 
                                 // Send the confirmation code to email
+                                Helper.sendEmail(1, txtUsername.getText(), txtEmail.getText(), confirmationCode);
+                                
                                 Helper.consoleMessage("usrCrtOk", doctor.getUserName(), txtEmail.getText());
                                 printEmptyLine();
                                 Helper.userMessage("usrCrtOk", txtUsername.getText(), txtEmail.getText());
-                                
-                                Helper.sendEmail(1, txtUsername.getText(), txtEmail.getText(), confirmationCode);
                                 
                                 Helper.consoleMessage("clsView", this.getClass().toString());
                                 this.dispose();
                             
                                 // 4.2.- Show confirm Email view to confirm it XD
                                 ConfirmEmail confirmEmail = new 
-                                    ConfirmEmail(txtUsername.getText(), txtEmail.getText(), confirmationCode);
+                                    ConfirmEmail("opnView", txtUsername.getText(), txtEmail.getText(), confirmationCode);
                                 confirmEmail.setVisible(true);
 
                             } catch (MessagingException | IOException ex) {

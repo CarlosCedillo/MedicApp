@@ -284,7 +284,14 @@ public class Helper {
                 type = JOptionPane.INFORMATION_MESSAGE;
             break;
             
-            // User not founf
+            // Paswwords not match
+            
+            case "pssNm":
+                userMessage = "Las contraseñas con coinciden";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            // User not found
             
             case "usrNtf":
                 userMessage = "El usuario no existe";
@@ -296,6 +303,39 @@ public class Helper {
             case "usrLogNo":
                 userMessage = "Contraseña incorrecta";
                 type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            // Code not equal
+            
+            case "cdeNte":
+                userMessage = "Código incorrecto";
+                type = JOptionPane.ERROR_MESSAGE;
+            break;
+            
+            // Confirm email
+            
+            case "cnfEmlOk":
+                userMessage = "Correo confirmado";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            case "cnfEmlNo":
+                userMessage = "El correo no se pudo confirmar";
+                type = JOptionPane.ERROR_MESSAGE;
+            break;
+            
+            // Same email (Update email)
+            
+            case "smeEml":
+                userMessage = "Ese correo ya lo estas usando";
+                type = JOptionPane.ERROR_MESSAGE;
+            break;
+            
+            // Update email
+            
+            case "updEmlNo":
+                userMessage = "No se actualizo el correo";
+                type = JOptionPane.ERROR_MESSAGE;
             break;
             
             // Default
@@ -317,6 +357,27 @@ public class Helper {
         Integer type = null;
     
         switch( code ){
+            
+            // User not created
+            
+            case "usrCrtNo": 
+                userMessage = "No se pudo registrar al usuario "+string;
+                type = JOptionPane.ERROR_MESSAGE;
+            break;
+            
+            // User exist in DB
+            
+            case "usrSchOk": 
+                userMessage = "El usuario "+string+" ya esta registrado";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            // Email exist in DB
+            
+            case "emlSchOk": 
+                userMessage = "El correo "+string+" ya esta registrado";
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
             
             // Default
             
@@ -345,6 +406,20 @@ public class Helper {
                 type = JOptionPane.INFORMATION_MESSAGE;
             break;
             
+            // Singup
+            
+            case "usrCrtOk":
+                userMessage = "Usuario "+username+" registrado con éxito <br>Código mandado a "+email;
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
+            // Update email
+            
+            case "updEmlOk":
+                userMessage = "Correo de "+username+" actualizado correctamente <br>Código mandado a "+email;
+                type = JOptionPane.INFORMATION_MESSAGE;
+            break;
+            
             // Default
             
             default: 
@@ -364,12 +439,28 @@ public class Helper {
         
         switch( code ){
             
+            // Forom incomplete
+            
             case "mssFld":
-                consoleMessage = "Form incomplete";
+                consoleMessage = "Message: Form incomplete";
             break;
             
+            // Password not match
+            
             case "pssNtm":
-                consoleMessage = "Paswords not match";
+                consoleMessage = "Message: Passwords not match";
+            break;
+            
+            // Code not equal
+            
+            case "cdeNte":
+                consoleMessage = "Message: Wrong code";
+            break;
+            
+            // Same email (change email)
+            
+            case "smeEml":
+                consoleMessage = "Message: Both emails are the same";
             break;
             
             // Default
@@ -400,6 +491,22 @@ public class Helper {
                 consoleMessage = "---- Cloing "+string+" ----";
             break;
             
+            // Refresh view
+            
+            case "rfshView":
+                consoleMessage = "Refreshing "+string;
+            break;
+            
+            // Sub views
+            
+            case "opnSvw":
+                consoleMessage = "Opening: "+string;
+            break;
+            
+            case "clsSvw":
+                consoleMessage = "Closing: "+string;
+            break;
+            
             // Login
             
             case "lgnChk":
@@ -420,6 +527,10 @@ public class Helper {
                 consoleMessage = "Checkink confirmed email: "+string;
             break;
             
+            case "cnfMsg":
+                consoleMessage = "User "+string+": Confirming email";
+            break;
+            
             case "cnfChkOk":
                 consoleMessage = "User "+string+": Email confirmed";
             break;
@@ -435,21 +546,21 @@ public class Helper {
             break;
             
             case "usrSchOk":
-                consoleMessage = "User "+string+": Found";
+                consoleMessage = "User "+string+": Found it";
             break;
             
             case "usrSchNo":
                 consoleMessage = "User "+string+": Not found";
             break;
             
-            // Search user in DB
+            // Search email in DB
             
             case "emlSch":
                 consoleMessage = "Searching email: "+string;
             break;
             
             case "emlSchOk":
-                consoleMessage = "Email "+string+": Found";
+                consoleMessage = "Email "+string+": Found it";
             break;
             
             case "emlSchNo":
@@ -476,6 +587,16 @@ public class Helper {
                 consoleMessage = "User "+string+": Not created";
             break;
             
+            // Update email
+            
+            case "updEmlOk":
+                consoleMessage = "User "+string+": Email updated successfully";
+            break;
+            
+            case "updEmlNo":
+                consoleMessage = "User "+string+": Email not updated";
+            break;
+            
             // Default
             
             default:
@@ -494,8 +615,18 @@ public class Helper {
         
         switch( code ){
             
+            case "usrCrtOk":
+                consoleMessage = "User "+username+": Confirmation code send to "+email;
+            break;
+            
             case "sndCde":
-                consoleMessage = "Sending "+username+" confirmation code to "+email;
+                consoleMessage = "User "+username+": Sendig new code to "+email;
+            break;
+            
+            // Update email
+            
+            case "updEml":
+                consoleMessage = "User "+username+": Updating email to "+email;
             break;
             
             // Default

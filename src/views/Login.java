@@ -216,20 +216,20 @@ public class Login extends javax.swing.JFrame {
                             String doctorEmail = Helper.uncrypt(encryptedEmail);
 
                             // Create a new code
-                            String confirmationCode = Helper.createCode();
+                            String confirmCode = Helper.createCode();
 
                             // Send the confirmation code to email
                             Helper.consoleMessage("sndCde", txtUsername.getText(), doctorEmail);
                             printEmptyLine();
                             Helper.userMessage("sndCde", txtUsername.getText(), doctorEmail);
                             
-                            Helper.sendEmail(3, txtUsername.getText(), doctorEmail, confirmationCode);
+                            Helper.sendEmail(3, txtUsername.getText(), doctorEmail, confirmCode);
                             
                             Helper.consoleMessage("clsView", this.getClass().toString());
                             this.dispose();
 
                             // Show activate view
-                            ConfirmEmail activate = new ConfirmEmail(txtUsername.getText(), doctorEmail, confirmationCode);
+                            ConfirmEmail activate = new ConfirmEmail("opnView", txtUsername.getText(), doctorEmail, confirmCode);
                             activate.setVisible(true);
 
                         } catch (MessagingException | IOException ex) {
@@ -263,10 +263,8 @@ public class Login extends javax.swing.JFrame {
 
     private void btnForgotPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForgotPasswordActionPerformed
         
-        Helper.consoleMessage("clsView", this.getClass().toString());
         ForgotPassword forgotPassword = new ForgotPassword();
         forgotPassword.setVisible(true);
-        this.dispose();
         
     }//GEN-LAST:event_btnForgotPasswordActionPerformed
 

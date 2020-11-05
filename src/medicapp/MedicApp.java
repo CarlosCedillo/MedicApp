@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.mail.MessagingException;
+import views.ConfirmEmail;
 import views.Login;
 
 /**
@@ -15,15 +16,8 @@ import views.Login;
  */
 public class MedicApp {
 
-    /**
-     * @param args the command line arguments
-     * @throws java.sql.SQLException
-     * @throws java.security.NoSuchAlgorithmException
-     * @throws javax.mail.MessagingException
-     * @throws java.io.IOException
-     */
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException, MessagingException, IOException {
-        
+
         System.out.println("----- Starting MedicApp, created by Carlos Gerardo Cedillo Alcántar -----");
         
         DataBase dataBase = new DataBase();
@@ -32,6 +26,10 @@ public class MedicApp {
         Login login = new Login();
         login.setVisible(true);
 
+/*    
+        ConfirmEmail confirmEmail = new ConfirmEmail("usario","correo","123456");
+        confirmEmail.setVisible(true);
+    */
     }
 
 }
