@@ -20,6 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import dao.interfaces.DoctorDao;
 import dao.entities.Doctors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Cageceal
@@ -350,6 +352,49 @@ public class DoctorDaoImpl extends DataBase implements DoctorDao {
 
         return username;
 
+    }
+
+    @Override
+    public List<Doctors> getDoctorInfo(String doctorUserName) throws Exception {
+        
+        List<Doctors> doctorInfo = new ArrayList<>();
+        DataBase dataBase = new DataBase();
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        try {
+
+            Connection connection = dataBase.getConnection();
+            preparedStatement = connection.prepareCall("SELECT * FROM doctors WHERE doctorUserName = ?");
+            preparedStatement.setString(1, doctorUserName);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                
+                Doctors doctors = new Doctors();
+                doctors.setUserName         (resultSet.getString  ("doctorUserName"));      //1
+                doctors.setPassword         (resultSet.getString  ("password"));            //2
+                doctors.setEmail            (resultSet.getString  ("doctorEmail"));         //3
+                doctors.setConfirmedEmail   (resultSet.getBoolean ("confirmedEmail"));      //4
+                doctors.setName             (resultSet.getString  ("doctorName"));          //5
+                doctors.setLastName1        (resultSet.getString  ("doctorLastName1"));     //6
+                doctors.setLastName2        (resultSet.getString  ("doctorLastName2"));     //7
+                doctors.setSex              (resultSet.getString  ("doctorSex"));           //8
+                
+                doctorInfo.add(doctors);
+                
+            }
+
+            connection = dataBase.closeConnectio();
+            preparedStatement.close();
+            resultSet.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return doctorInfo;
+        
     }
 
 }

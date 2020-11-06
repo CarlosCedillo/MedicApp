@@ -352,7 +352,7 @@ public class Helper {
 
             // Default
             default:
-                userMessage = "Código no asignado";
+                userMessage = code+": Código no asignado";
                 type = JOptionPane.WARNING_MESSAGE;
             break;
 
@@ -400,7 +400,7 @@ public class Helper {
 
             // Default
             default:
-                userMessage = "Código no asignado";
+                userMessage = code+": Código no asignado";
                 type = JOptionPane.WARNING_MESSAGE;
             break;
 
@@ -437,7 +437,7 @@ public class Helper {
 
             // Default
             default:
-                userMessage = "Código no asignado";
+                userMessage = code+": Código no asignado";
                 type = JOptionPane.WARNING_MESSAGE;
             break;
 
@@ -480,7 +480,7 @@ public class Helper {
 
             // Default
             default:
-                consoleMessage = "Message not setted";
+                consoleMessage = code+": Not supported yet";
             break;
 
         }
@@ -578,6 +578,11 @@ public class Helper {
             case "getEml":
                 consoleMessage = "User " + string + ": Getting email";
             break;
+            
+            // Get Docotr info
+            case "getAll":
+                consoleMessage = "Message: Getting info of "+string;
+            break;
 
             // Create user
             case "usrCrt":
@@ -616,7 +621,7 @@ public class Helper {
 
             // Default
             default:
-                consoleMessage = "Message not setted";
+                consoleMessage = code+": Not supported yet";
             break;
 
         }
@@ -651,7 +656,7 @@ public class Helper {
 
             // Default
             default:
-                consoleMessage = "Message not setted";
+                consoleMessage = code+": Not supported yet";
             break;
 
         }

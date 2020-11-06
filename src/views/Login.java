@@ -20,7 +20,7 @@ import medicapp.Helper;
 public class Login extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
-    
+
     public Login() {/* Not sure what to put here >_< */}
 
     public Login( String call ) {
@@ -210,14 +210,20 @@ public class Login extends javax.swing.JFrame {
                 boolean loggedin = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
                 if (loggedin == true) {
 
-                    Helper.consoleMessage("lgnChkOk", txtUsername.getText());
-
-                    printEmptyLine();
-                    Helper.consoleMessage("clsView", this.getClass().toString());
-                    this.dispose();
-
-                    Welcome welcome = new Welcome();
-                    welcome.setVisible(true);
+                    try {
+                        
+                        Helper.consoleMessage("lgnChkOk", txtUsername.getText());
+                        
+                        printEmptyLine();
+                        Helper.consoleMessage("clsView", this.getClass().toString());
+                        this.dispose();
+                        
+                        Welcome welcome = new Welcome( txtUsername.getText() );
+                        welcome.setVisible(true);
+                        
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
 
                 } else {
                     // If login fail

@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Thu Nov 05 17:01:10 MST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0175-9adb-64a4-000007286078 
+Fri Nov 06 00:13:53 MST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0175-9c67-8b6d-000007286448 
 on database directory C:\Users\Cageceal\Documents\NetBeansProyects\MedicApp\DB\MedicApp.DB with class loader sun.misc.Launcher$AppClassLoader@6bc7c054 
 Loaded from file:/C:/Users/Cageceal/Documents/NetBeansProyects/MedicApp/src/libreries/derby.jar
 java.vendor=Oracle Corporation

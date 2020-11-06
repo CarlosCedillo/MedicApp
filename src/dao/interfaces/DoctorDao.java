@@ -14,6 +14,7 @@ TABLE doctors
 package dao.interfaces;
 
 import dao.entities.Doctors;
+import java.util.List;
 
 /**
  * @author Cageceal
@@ -40,6 +41,6 @@ public interface DoctorDao {
     
     public String getUsername(String doctorEmail);
     
-    //public List<Doctors> read() throws Exception;
+    public List<Doctors> getDoctorInfo(String doctorUserName) throws Exception;
     
 }
