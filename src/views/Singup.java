@@ -9,7 +9,7 @@ TABLE doctors
     doctorLastName1 varchar(50)     6
     doctorLastName2 varchar(50)     7
     doctorSex varchar(1)            8
-*/
+ */
 
 package views;
 
@@ -17,8 +17,6 @@ import dao.impls.DoctorDaoImpl;
 import dao.entities.Doctors;
 import java.awt.Color;
 import java.awt.Image;
-import java.io.IOException;
-import javax.mail.MessagingException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import medicapp.Helper;
@@ -29,6 +27,7 @@ import medicapp.Helper;
 public class Singup extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
+
     public Singup() {
 
         initComponents();
@@ -44,10 +43,10 @@ public class Singup extends javax.swing.JFrame {
         lblLogo.setIcon(showLogo);
 
         this.setLocationRelativeTo(null);
-        
+
         Helper.consoleMessage("opnView", this.getClass().toString());
         printEmptyLine();
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -310,7 +309,7 @@ public class Singup extends javax.swing.JFrame {
     private void btnGoBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoBackActionPerformed
 
         Helper.consoleMessage("clsView", this.getClass().toString());
-        Login login = new Login();
+        Login login = new Login("opn");
         login.setVisible(true);
         this.dispose();
 
@@ -330,29 +329,33 @@ public class Singup extends javax.swing.JFrame {
             if (txtPassword1.getText().equals(txtPassword2.getText()) == true) {
 
                 DoctorDaoImpl doctorDaoImpl = new DoctorDaoImpl();
-                
+
                 // 2.- Check if username is on the DB
                 Helper.consoleMessage("usrSch", txtUsername.getText());
                 boolean checkUsername = doctorDaoImpl.existUsername(txtUsername.getText());
                 if (checkUsername == false) {
-                    
+
                     Helper.consoleMessage("usrSchNo", txtUsername.getText());
-                    
+
                     // 3.- Check if email is on the DB (encrypted)
                     Helper.consoleMessage("emlSch", txtEmail.getText());
                     String encryptedEmail = Helper.encrypt(txtEmail.getText());
                     boolean checkEmail = doctorDaoImpl.existEmail(encryptedEmail);
                     if (checkEmail == false) {
-                        
+
                         Helper.consoleMessage("emlSchNo", txtEmail.getText());
 
                         // 4.1.- Create a new Doctor in DB
                         String encryptedPassword = Helper.encrypt(txtPassword1.getText());
                         String doctorSex = null;
-                        
-                        if( rbtnFemale.isSelected() == true ){doctorSex = "M";}
-                        if( rbtnMale.isSelected() == true ){doctorSex = "H";}
-                        
+
+                        if (rbtnFemale.isSelected() == true) {
+                            doctorSex = "M";
+                        }
+                        if (rbtnMale.isSelected() == true) {
+                            doctorSex = "H";
+                        }
+
                         Doctors doctor = new Doctors();
                         doctor.setUserName(txtUsername.getText());              //1
                         doctor.setPassword(encryptedPassword);                  //2
@@ -362,39 +365,24 @@ public class Singup extends javax.swing.JFrame {
                         doctor.setLastName1(txtLastname1.getText());            //6
                         doctor.setLastName2(txtLastname2.getText());            //7
                         doctor.setSex(doctorSex);                               //8
-                        
+
                         Helper.consoleMessage("usrCrt", doctor.getUserName());
                         boolean created = doctorDaoImpl.create(doctor);
-                        
-                        if( created == true ){
-                            
-                            Helper.consoleMessage("usrCrtOk", txtUsername.getText());
-                            
-                            try {
-                                
-                                // Create new code
-                                String confirmationCode = Helper.createCode();
-                                
-                                // Send the confirmation code to email
-                                Helper.sendEmail(1, txtUsername.getText(), txtEmail.getText(), confirmationCode);
-                                
-                                Helper.consoleMessage("usrCrtOk", doctor.getUserName(), txtEmail.getText());
-                                printEmptyLine();
-                                Helper.userMessage("usrCrtOk", txtUsername.getText(), txtEmail.getText());
-                                
-                                Helper.consoleMessage("clsView", this.getClass().toString());
-                                this.dispose();
-                            
-                                // 4.2.- Show confirm Email view to confirm it XD
-                                ConfirmEmail confirmEmail = new 
-                                    ConfirmEmail("opnView", txtUsername.getText(), txtEmail.getText(), confirmationCode);
-                                confirmEmail.setVisible(true);
 
-                            } catch (MessagingException | IOException ex) {
-                                System.out.println(ex.getMessage());
-                            }
-                            
-                        }else{
+                        if (created == true) {
+
+                            Helper.consoleMessage("usrCrtOk", txtUsername.getText());
+                            Helper.userMessage("usrCrtOk", txtUsername.getText());
+
+                            printEmptyLine();
+                            Helper.consoleMessage("clsView", this.getClass().toString());
+                            this.dispose();
+
+                            // Shows singup view
+                            Login login = new Login("opn");
+                            login.setVisible(true);
+
+                        } else {
                             // If the doctor was not crate
                             Helper.consoleMessage("usrCrtNo", doctor.getUserName());
                             printEmptyLine();
@@ -432,7 +420,7 @@ public class Singup extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSingupActionPerformed
 
     public static void main(String args[]) {
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -450,7 +438,7 @@ public class Singup extends javax.swing.JFrame {
                 new Singup().setVisible(true);
             }
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -483,5 +471,5 @@ public class Singup extends javax.swing.JFrame {
     private void printEmptyLine() {
         System.out.println("");
     }
-    
+
 }

@@ -12,36 +12,38 @@ import medicapp.Helper;
  * @author Cageceal
  */
 public class UpdateEmail extends javax.swing.JFrame {
-    
+
     ConfirmEmail help;
 
     private static final long serialVersionUID = 1L;
-    public UpdateEmail() { /* Not sure what to put here >_< */ }
+
+    public UpdateEmail() {/* Not sure what to put here >_< */}
+
     UpdateEmail(String username, String email, ConfirmEmail confirmEmail) {
-        
+
         initComponents();
         this.getContentPane().setBackground(Color.DARK_GRAY);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
         this.setTitle("MedicApp");
         Image image = new ImageIcon(getClass().getResource("/images/icon.png")).getImage();
         setIconImage(image);
-        
+
         this.setLocationRelativeTo(null);
-        
+
         lblMessage.setForeground(Color.WHITE);
         lblPassword.setForeground(Color.WHITE);
         lblNewEmail.setForeground(Color.WHITE);
-        
-        lblMessage.setText("Cambiar correo electrónico de "+username+":");
-        
+
+        lblMessage.setText("Cambiar correo electrónico de " + username + ":");
+
         // Helpers to keep data
         txtUsername.setText(username);
         txtOldEmail.setText(email);
         help = confirmEmail;
-        
+
         Helper.consoleMessage("opnSvw", this.getClass().toString());
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -163,90 +165,89 @@ public class UpdateEmail extends javax.swing.JFrame {
 
     @SuppressWarnings("deprecation")
     private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
-        
+
         // check the form is filled in
-        if( txtPassword.getText().isEmpty() == false && txtNewEmail.getText().isEmpty() == false ){
-            
+        if (txtPassword.getText().isEmpty() == false && txtNewEmail.getText().isEmpty() == false) {
+
             // Check emails are not the same
-            if( !txtNewEmail.getText().equals(txtOldEmail.getText()) ){
-                
+            if (!txtNewEmail.getText().equals(txtOldEmail.getText())) {
+
                 DoctorDaoImpl doctorDaoImpl = new DoctorDaoImpl();
-                
+
                 // Check if the new email exist in DB
                 Helper.consoleMessage("emlSch", txtNewEmail.getText());
-                boolean existEmail = doctorDaoImpl.existEmail( txtNewEmail.getText() );
-                if( existEmail == false ){
-                    
+                boolean existEmail = doctorDaoImpl.existEmail(txtNewEmail.getText());
+                if (existEmail == false) {
+
                     Helper.consoleMessage("emlSchNo", txtNewEmail.getText());
                     String encryptedEmail = Helper.encrypt(txtNewEmail.getText());
-                    
+
                     // Chage OldEmail to NewEmail
                     Helper.consoleMessage("updEml", txtUsername.getText(), txtNewEmail.getText());
-                    boolean updated = doctorDaoImpl.updateEmail( txtUsername.getText(), encryptedEmail);
-                    if( updated == true ){
-                        
+                    boolean updated = doctorDaoImpl.updateEmail(txtUsername.getText(), encryptedEmail);
+                    if (updated == true) {
+
                         try {
-                            
+
                             // Send new code
                             String newCode = Helper.createCode();
                             Helper.sendEmail(2, txtUsername.getText(), txtNewEmail.getText(), newCode);
-                            
+
                             Helper.consoleMessage("updEmlOk", txtUsername.getText());
                             Helper.userMessage("updEmlOk", txtUsername.getText(), txtNewEmail.getText());
                             Helper.consoleMessage("clsSvw", this.getClass().toString());
                             printEmptyLine();
-                            
+
                             this.dispose();
                             help.dispose();
-                            
-                            ConfirmEmail confirmEmail = new 
-                                ConfirmEmail("subView", txtUsername.getText(), txtNewEmail.getText(), newCode);
+
+                            ConfirmEmail confirmEmail = new ConfirmEmail("rfh", txtUsername.getText(), txtNewEmail.getText(), newCode);
                             confirmEmail.setVisible(true);
-                            
+
                         } catch (MessagingException | IOException ex) {
                             System.out.println(ex.getMessage());
                         }
-                        
-                    }else{
+
+                    } else {
                         // If email not updated
                         Helper.consoleMessage("updEmlNo", txtUsername.getText());
                         printEmptyLine();
                         Helper.userMessage("updEmlNo");
                     }
-                    
-                }else{
+
+                } else {
                     // If the emails exist
                     Helper.consoleMessage("emlSchOk", txtNewEmail.getText());
                     printEmptyLine();
                     Helper.userMessage("emlSchOk", txtNewEmail.getText());
                 }
-                
-            }else{
+
+            } else {
                 // If the emails are the same
                 Helper.consoleMessage("smeEml");
                 printEmptyLine();
                 Helper.userMessage("smeEml");
             }
-            
-        }else{
+
+        } else {
             // If something miss
             Helper.consoleMessage("mssFld");
             printEmptyLine();
             Helper.userMessage("frmNo");
         }
-        
+
     }//GEN-LAST:event_btnChangeActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        
+
         Helper.consoleMessage("clsSvw", this.getClass().toString());
         printEmptyLine();
         this.dispose();
-        
+
     }//GEN-LAST:event_btnCancelActionPerformed
 
     public static void main(String args[]) {
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -254,11 +255,11 @@ public class UpdateEmail extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | 
-                 IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new UpdateEmail().setVisible(true);
@@ -282,5 +283,5 @@ public class UpdateEmail extends javax.swing.JFrame {
     private void printEmptyLine() {
         System.out.println("");
     }
-    
+
 }

@@ -13,8 +13,6 @@ TABLE doctors
 
 package dao.interfaces;
 
-//public List<Doctors> read() throws Exception;
-
 import dao.entities.Doctors;
 
 /**
@@ -26,16 +24,22 @@ public interface DoctorDao {
     
     public boolean updateEmail( String doctorUserName, String doctorEmail );
     
+    public boolean resetPassword( String doctorUserName, String newPassword );
+    
     public boolean login( String doctorUserName, String password );
     
     public boolean existUsername( String doctorUserName );
     
     public boolean existEmail(String doctorEmail);
     
-    public boolean getconfirmedEmail(String userName);
+    public boolean getconfirmedEmail(String doctorUserName);
     
-    public boolean setconfirmedEmail(String userName);
+    public boolean setconfirmedEmail(String doctorUserName);
     
-    public String getEmail(String userName);
+    public String getEmail(String doctorUserName);
+    
+    public String getUsername(String doctorEmail);
+    
+    //public List<Doctors> read() throws Exception;
     
 }

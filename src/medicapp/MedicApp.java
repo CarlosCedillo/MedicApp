@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.mail.MessagingException;
-import views.ConfirmEmail;
 import views.Login;
 
 /**
@@ -23,13 +22,17 @@ public class MedicApp {
         DataBase dataBase = new DataBase();
         dataBase.createDB();
         
-        Login login = new Login();
+        Login login = new Login("opn");
         login.setVisible(true);
 
 /*    
         ConfirmEmail confirmEmail = new ConfirmEmail("usario","correo","123456");
         confirmEmail.setVisible(true);
-    */
+*/
+/*
+        ResetPassword resetPassword = new ResetPassword("opn","Cageceal","cgca_0223@hotmail.com","123456");
+        resetPassword.setVisible(true);
+*/
     }
 
 }

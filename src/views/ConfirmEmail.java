@@ -4,10 +4,10 @@
     Or when (he or she) try to login and the account is not activated
 
     call
-        opnView - consoleMessage(opnView)
-        subView - consoleMessage(opnSvw)
+        opn = Open
+        rfh = Refresh
     
-*/
+ */
 
 package views;
 
@@ -26,52 +26,53 @@ import medicapp.Helper;
 public class ConfirmEmail extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
-    public ConfirmEmail() { /* Not sure what to put here >_< */ }
-    public ConfirmEmail( String call, String userName, String email, String confirmationCode ) {
-        
+
+    public ConfirmEmail() {/* Not sure what to put here >_< */ }
+
+    public ConfirmEmail(String call, String userName, String email, String confirmationCode) {
+
         initComponents();
         this.getContentPane().setBackground(Color.DARK_GRAY);
-        
+
         this.setTitle("MedicApp");
         Image image = new ImageIcon(getClass().getResource("/images/icon.png")).getImage();
         setIconImage(image);
-        
+
         ImageIcon logo = new ImageIcon(getClass().getResource("/images/MedicApp_Logo_1.png"));
-        Icon showLogo = new ImageIcon(logo.getImage().getScaledInstance
-            (lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_DEFAULT));
+        Icon showLogo = new ImageIcon(logo.getImage().getScaledInstance(lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_DEFAULT));
         lblLogo.setIcon(showLogo);
-        
+
         this.setLocationRelativeTo(null);
-        
+
         lblMessage.setForeground(Color.WHITE);
         lblCode.setForeground(Color.WHITE);
-        
-        lblMessage.setText("<HTML>Hola "+userName+":<br>"
-                + "Código de confirmación enviado a "+email+"</HTML>");
-        
+
+        lblMessage.setText("<HTML>Hola " + userName + ":<br>"
+                + "Código de confirmación enviado a " + email + "</HTML>");
+
         // Helper to keep data
-        
         hlplEmail.setText(email);
         hlpUsername.setText(userName);
         hlpCode.setText(confirmationCode);
-        
-        switch( call ){
-            
-            case "opnView":
+
+        switch (call) {
+
+            case "opn":
                 Helper.consoleMessage("opnView", this.getClass().toString());
                 printEmptyLine();
             break;
-            
-            case "subView":
+
+            case "rfh":
                 Helper.consoleMessage("rfshView", this.getClass().toString());
+                printEmptyLine();
             break;
-            
+
             default:
-                System.out.println(call+": Code not used");
+                System.out.println(call + ": Not supported yet");
             break;
-            
+
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -201,83 +202,83 @@ public class ConfirmEmail extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChangeEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeEmailActionPerformed
-        
-        UpdateEmail updateEmail = new UpdateEmail( hlpUsername.getText(), hlplEmail.getText(), this);
+
+        UpdateEmail updateEmail = new UpdateEmail(hlpUsername.getText(), hlplEmail.getText(), this);
         updateEmail.setVisible(true);
-        
+
     }//GEN-LAST:event_btnChangeEmailActionPerformed
 
     private void btnNewCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCodeActionPerformed
-        
+
         try {
-            
+
             // Create new confimation code
             String newConfirmationCode = Helper.createCode();
-            
+
             // Send code to email
             Helper.sendEmail(3, hlpUsername.getText(), hlplEmail.getText(), newConfirmationCode);
-            
+
             Helper.consoleMessage("sndCde", hlpUsername.getText(), hlplEmail.getText());
             printEmptyLine();
             Helper.userMessage("sndCde", hlpUsername.getText(), hlplEmail.getText());
-            
+
             this.dispose();
-            
-            ConfirmEmail confirmEmail = new ConfirmEmail("subView",hlpUsername.getText(), hlplEmail.getText(), newConfirmationCode);
+
+            ConfirmEmail confirmEmail = new ConfirmEmail("rfh", hlpUsername.getText(), hlplEmail.getText(), newConfirmationCode);
             confirmEmail.setVisible(true);
-            
+
         } catch (MessagingException | IOException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
     }//GEN-LAST:event_btnNewCodeActionPerformed
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-        
+
         // Check if the there is something in the field
-        if( txtCode.getText().isEmpty() == false ){
-            
+        if (txtCode.getText().isEmpty() == false) {
+
             // Check if the code is the same
-            if( txtCode.getText().equals( hlpCode.getText() ) ){
-                
+            if (txtCode.getText().equals(hlpCode.getText())) {
+
                 DoctorDaoImpl doctorDaoImpl = new DoctorDaoImpl();
-                
+
                 // Set confirmatedEmail = true and check it
                 Helper.consoleMessage("cnfMsg", hlpUsername.getText());
                 boolean confirmated = doctorDaoImpl.setconfirmedEmail(hlpUsername.getText());
-                if( confirmated == true ){
-                    
+                if (confirmated == true) {
+
                     Helper.consoleMessage("cnfChkOk", hlpUsername.getText());
                     printEmptyLine();
                     Helper.userMessage("cnfEmlOk");
-                    
+
                     Helper.consoleMessage("clsView", this.getClass().toString());
                     this.dispose();
-                    
-                    Welcome welcome = new Welcome();
-                    welcome.setVisible(true);
-                    
-                }else{
+
+                    Login login = new Login("opn");
+                    login.setVisible(true);
+
+                } else {
                     // If was not confirmet
                     Helper.consoleMessage("cnfChkNo", hlpUsername.getText());
                     printEmptyLine();
                     Helper.userMessage("cnfEmlNo");
                 }
-                
-            }else{
+
+            } else {
                 // If the code is not equal
                 Helper.consoleMessage("cdeNte");
                 printEmptyLine();
                 Helper.userMessage("cdeNte");
             }
-            
-        }else{
+
+        } else {
             // If miss something
             Helper.consoleMessage("mssFld");
             printEmptyLine();
             Helper.userMessage("frmNo");
         }
-        
+
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     public static void main(String args[]) {
@@ -292,7 +293,7 @@ public class ConfirmEmail extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ConfirmEmail().setVisible(true);

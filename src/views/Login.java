@@ -1,10 +1,15 @@
+
+/**
+ * Code to call
+ *      opn - open first message
+ *      rfs - refresh
+ */
+
 package views;
 
 import dao.impls.DoctorDaoImpl;
 import java.awt.Color;
 import java.awt.Image;
-import java.io.IOException;
-import javax.mail.MessagingException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import medicapp.Helper;
@@ -15,28 +20,42 @@ import medicapp.Helper;
 public class Login extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 1L;
-    public Login() {
-        
+    
+    public Login() {/* Not sure what to put here >_< */}
+
+    public Login( String call ) {
+
         initComponents();
         this.getContentPane().setBackground(Color.DARK_GRAY);
-        
+
         this.setTitle("MedicApp");
         Image image = new ImageIcon(getClass().getResource("/images/icon.png")).getImage();
         setIconImage(image);
-        
+
         ImageIcon logo = new ImageIcon(getClass().getResource("/images/MedicApp_Logo_1.png"));
         Icon showLogo = new ImageIcon(logo.getImage().getScaledInstance
             (lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_DEFAULT));
         lblLogo.setIcon(showLogo);
-        
+
         this.setLocationRelativeTo(null);
         
-        lblUsername.setForeground(Color.WHITE);
-        lblPassword.setForeground(Color.WHITE);
-        
-        Helper.consoleMessage("opnView", this.getClass().toString());
-        printEmptyLine();
-        
+        switch( call ){
+            
+            case "opn":
+                Helper.consoleMessage("opnView", this.getClass().toString());
+                printEmptyLine();
+            break;
+            
+            case "rfs":
+                Helper.consoleMessage("rfshView", this.getClass().toString());
+            break;
+            
+            default:
+                System.out.println(call + ": Not supported yet");
+            break;
+            
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -59,9 +78,11 @@ public class Login extends javax.swing.JFrame {
         pnlLogin.setBackground(new java.awt.Color(37, 73, 138));
 
         lblUsername.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        lblUsername.setForeground(new java.awt.Color(255, 255, 255));
         lblUsername.setText("Nombre de usuario");
 
         lblPassword.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        lblPassword.setForeground(new java.awt.Color(255, 255, 255));
         lblPassword.setText("Contraseña");
 
         txtPassword.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -160,116 +181,77 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSingupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSingupActionPerformed
-        
+
         Helper.consoleMessage("clsView", this.getClass().toString());
         Singup singup = new Singup();
         this.dispose();
         singup.setVisible(true);
-        
+
     }//GEN-LAST:event_btnSingupActionPerformed
 
     @SuppressWarnings("deprecation")
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        
+
         // Check all fields are filled
-        if( txtUsername.getText().isEmpty() == false && txtPassword.getText().isEmpty() == false ){
-            
+        if (txtUsername.getText().isEmpty() == false && txtPassword.getText().isEmpty() == false) {
+
             DoctorDaoImpl doctorDaoImpl = new DoctorDaoImpl();
-            
+
             // Check that user exist in Db
             Helper.consoleMessage("usrSch", txtUsername.getText());
             boolean userExist = doctorDaoImpl.existUsername(txtUsername.getText());
-            if( userExist == true ){
-                
+            if (userExist == true) {
+
                 Helper.consoleMessage("usrSchOk", txtUsername.getText());
-            
+
                 // Check login
                 String encryptedPassword = Helper.encrypt(txtPassword.getText());
                 Helper.consoleMessage("lgnChk", txtUsername.getText());
                 boolean loggedin = doctorDaoImpl.login(txtUsername.getText(), encryptedPassword);
-                if( loggedin == true ){
+                if (loggedin == true) {
 
                     Helper.consoleMessage("lgnChkOk", txtUsername.getText());
 
-                    // Check confirmed Email
-                    Helper.consoleMessage("cnfChk", txtUsername.getText());
-                    boolean activated = doctorDaoImpl.getconfirmedEmail(txtUsername.getText());
-                    if( activated == true ){
+                    printEmptyLine();
+                    Helper.consoleMessage("clsView", this.getClass().toString());
+                    this.dispose();
 
-                        Helper.consoleMessage("cnfChkOk", txtUsername.getText());
-                        printEmptyLine();
-                        Helper.consoleMessage("clsView", this.getClass().toString());
-                        this.dispose();
+                    Welcome welcome = new Welcome();
+                    welcome.setVisible(true);
 
-                        Welcome welcome = new Welcome();
-                        welcome.setVisible(true);
-
-                    }else{
-
-                        Helper.consoleMessage("cnfChkNo", txtUsername.getText());
-
-                        try {
-
-                            // Get email (encrypted and unencrypt) of username
-                            Helper.consoleMessage("getEml", txtUsername.getText());
-                            String encryptedEmail = doctorDaoImpl.getEmail(txtUsername.getText());
-                            String doctorEmail = Helper.uncrypt(encryptedEmail);
-
-                            // Create a new code
-                            String confirmCode = Helper.createCode();
-
-                            // Send the confirmation code to email
-                            Helper.consoleMessage("sndCde", txtUsername.getText(), doctorEmail);
-                            printEmptyLine();
-                            Helper.userMessage("sndCde", txtUsername.getText(), doctorEmail);
-                            
-                            Helper.sendEmail(3, txtUsername.getText(), doctorEmail, confirmCode);
-                            
-                            Helper.consoleMessage("clsView", this.getClass().toString());
-                            this.dispose();
-
-                            // Show activate view
-                            ConfirmEmail activate = new ConfirmEmail("opnView", txtUsername.getText(), doctorEmail, confirmCode);
-                            activate.setVisible(true);
-
-                        } catch (MessagingException | IOException ex) {
-                            System.out.println(ex.getMessage());
-                        }
-
-                    }
-
-                }else{
+                } else {
                     // If login fail
                     Helper.consoleMessage("lgnChkNo", txtUsername.getText());
                     printEmptyLine();
                     Helper.userMessage("usrLogNo");
+                    refresh();
                 }
-                
-            }else{
+
+            } else {
                 // If the user dont exist in DB
                 Helper.consoleMessage("usrSchNo", txtUsername.getText());
                 printEmptyLine();
                 Helper.userMessage("usrNtf");
             }
-            
-        }else{
+
+        } else {
             // If some field is missing
             Helper.consoleMessage("mssFld");
             printEmptyLine();
             Helper.userMessage("frmNo");
         }
-        
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnForgotPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForgotPasswordActionPerformed
-        
-        ForgotPassword forgotPassword = new ForgotPassword();
+
+        ForgotPassword forgotPassword = new ForgotPassword(this);
         forgotPassword.setVisible(true);
-        
+
     }//GEN-LAST:event_btnForgotPasswordActionPerformed
 
     public static void main(String args[]) {
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -277,11 +259,11 @@ public class Login extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | 
-                javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | javax.swing.UnsupportedLookAndFeelException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
@@ -305,5 +287,14 @@ public class Login extends javax.swing.JFrame {
     private void printEmptyLine() {
         System.out.println("");
     }
-    
+
+    private void refresh() {
+        
+        this.dispose();
+        
+        Login login = new Login("rfs");
+        login.setVisible(true);
+        
+    }
+
 }
